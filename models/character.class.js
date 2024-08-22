@@ -38,6 +38,24 @@ class Character extends MovableObject {
         'img/character-rogue/Jump/jump6.png',
         'img/character-rogue/Jump/jump7.png'
     ];
+    IMAGES_DEAD = [
+        'img/character-rogue/Death/death1.png',
+        'img/character-rogue/Death/death2.png',
+        'img/character-rogue/Death/death3.png',
+        'img/character-rogue/Death/death4.png',
+        'img/character-rogue/Death/death5.png',
+        'img/character-rogue/Death/death6.png',
+        'img/character-rogue/Death/death7.png',
+        'img/character-rogue/Death/death8.png',
+        'img/character-rogue/Death/death9.png',
+        'img/character-rogue/Death/death10.png'
+    ];
+    IMAGES_HURT = [
+        'img/character-rogue/Hurt/hurt1.png',
+        'img/character-rogue/Hurt/hurt2.png',
+        'img/character-rogue/Hurt/hurt3.png',
+        'img/character-rogue/Hurt/hurt4.png'
+    ];
     world;
     walking_sound = new Audio('audio/walking.mp3');
 
@@ -45,6 +63,8 @@ class Character extends MovableObject {
         super().loadImage('img/character-rogue/rogue.png');
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
+        this.loadImages(this.IMAGES_HURT);
+        this.loadImages(this.IMAGES_DEAD);
         this.applyGravity();
         this.animate();
     }
@@ -72,11 +92,13 @@ class Character extends MovableObject {
         }, 1000 / 60);
 
         setInterval(() => {
-
-            if (this.isAboveGround()) {
+            if (this.isDead()) {
+                this.playAnimation(this.IMAGES_DEAD);
+            } else if (this.isHurt()) {
+                this.playAnimation(this.IMAGES_HURT);
+            } else if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
             } else {
-
                 if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
                     this.playAnimation(this.IMAGES_WALKING);
                 }
