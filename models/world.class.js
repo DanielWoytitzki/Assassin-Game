@@ -7,6 +7,7 @@ class World {
     camera_x = 0;
     statusBar = new StatusBar();
     throwableObjects = [];
+    canThrow = true;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -29,19 +30,49 @@ class World {
     }
 
     checkThrowObjects() {
-        if (this.keyboard.E) {
-            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
-            this.throwableObjects.push(bottle);
+        if (this.keyboard.RSHIFT && this.canThrow) {
+            let knife = new ThrowableObject(this.character.x + 100, this.character.y + 100);
+            this.throwableObjects.push(knife);
+            this.canThrow = false;  // Verhindert, dass das Messer kontinuierlich geworfen wird
+        }
+    
+        // Setze canThrow auf true zurück, wenn die Taste losgelassen wird
+        if (!this.keyboard.RSHIFT) {
+            this.canThrow = true;
         }
     }
 
     checkCollisions() {
-        this.level.enemies.forEach(enemy => {
+        // Prüfe Kollisionen zwischen dem Charakter und Gegnern
+        this.level.enemies.forEach((enemy, enemyIndex) => {
             if (this.character.isColliding(enemy)) {
-                this.character.hit();
+                this.character.hit();  // Der Charakter nimmt Schaden
                 this.statusBar.setPercentage(this.character.energy);
             }
         });
+    
+        // Prüfe Kollisionen zwischen geworfenen Objekten (Messer) und Gegnern
+        this.throwableObjects.forEach((throwableObject, throwableIndex) => {
+            for (let enemyIndex = 0; enemyIndex < this.level.enemies.length; enemyIndex++) {
+                let enemy = this.level.enemies[enemyIndex];
+                if (throwableObject.isColliding(enemy)) {
+                    this.handleEnemyDeath(enemy, enemyIndex);  // Feind stirbt bei Treffer
+                    this.throwableObjects.splice(throwableIndex, 1);  // Messer verschwindet nach dem Treffer
+                    console.log('Gegner von Messer getroffen!');
+    
+                    // Beende die Schleife, sobald ein Gegner getroffen wurde
+                    return;
+                }
+            }
+        });
+    }
+
+    // Diese Methode gehört ebenfalls zur World-Klasse
+    handleEnemyDeath(enemy, enemyIndex) {
+        enemy.playDeathAnimation();  // Spiele die Sterbeanimation des Gegners ab
+        setTimeout(() => {
+            this.level.enemies.splice(enemyIndex, 1);  // Entferne den Gegner nach der Animation
+        }, 2000);  // Animation dauert 500ms (kannst du anpassen)
     }
 
     draw() {

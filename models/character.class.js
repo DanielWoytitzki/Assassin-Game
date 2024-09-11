@@ -1,6 +1,7 @@
 class Character extends MovableObject {
 
-    speed = 2;
+    speed = 3;
+    y = -200;
 
     IMAGES_IDLE = [
         'img/character-rogue/Idle/idle1.png',
@@ -60,7 +61,15 @@ class Character extends MovableObject {
     walking_sound = new Audio('audio/walking.mp3');
 
     constructor() {
-        super().loadImage('img/character-rogue/rogue.png');
+        super();
+        this.hitboxWidth = this.width * 0.4;  // Setze die Hitbox für den Charakter
+        this.hitboxHeight = this.height * 0.5;  // Setze die Hitbox für den Charakter
+    
+        // Spezifischer Offset für den Charakter
+        this.hitboxOffsetX = -30;  // Beispielwert, der den X-Offset korrigiert
+        this.hitboxOffsetY = 25;  // Beispielwert, der den Y-Offset korrigiert
+    
+        this.loadImage('img/character-rogue/rogue.png');
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_HURT);

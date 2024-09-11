@@ -5,6 +5,8 @@ class MovableObject extends DrawableObject {
     acceleration = 2.5;
     energy = 100;
     lastHit = 0;
+    hitboxWidth = this.width * 1;  // Hitbox ist 70% der Bildbreite
+    hitboxHeight = this.height * 1; // Hitbox ist 80% der Bildhöhe
 
     applyGravity() {
         setInterval(() => {
@@ -20,10 +22,23 @@ class MovableObject extends DrawableObject {
     }
 
     isColliding(mo) {
-        return this.x + this.width > mo.x &&
-            this.y + this.height > mo.y &&
-            this.x < mo.x &&
-            this.y < mo.y + mo.height;
+        let offsetX = (this.width - this.hitboxWidth) / 2;
+        let offsetY = (this.height - this.hitboxHeight) / 2;
+    
+        let moOffsetX = (mo.width - mo.hitboxWidth) / 2;
+        let moOffsetY = (mo.height - mo.hitboxHeight) / 2;
+    
+        // Spezielle Offsets nur für den Charakter
+        if (this instanceof Character) {
+            offsetX += this.hitboxOffsetX;
+            offsetY += this.hitboxOffsetY;
+        }
+    
+        // Berechne die Kollision unter Berücksichtigung der Hitbox und der Offsets
+        return this.x + offsetX + this.hitboxWidth > mo.x + moOffsetX &&
+            this.y + offsetY + this.hitboxHeight > mo.y + moOffsetY &&
+            this.x + offsetX < mo.x + moOffsetX + mo.hitboxWidth &&
+            this.y + offsetY < mo.y + moOffsetY + mo.hitboxHeight;
     }
 
     hit() {
@@ -61,6 +76,6 @@ class MovableObject extends DrawableObject {
     }
 
     jump() {
-        this.speedY = 25;
+        this.speedY = 30;
     }
 }
