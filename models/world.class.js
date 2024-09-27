@@ -7,6 +7,7 @@ class World {
     camera_x = 0;
     statusBar = new StatusBar();
     throwableObjects = [];
+    collectables = [];  // Sammlung aller einsammelbaren Objekte
     canThrow = true;
 
     constructor(canvas, keyboard) {
@@ -25,8 +26,42 @@ class World {
     run() {
         setInterval(() => {
             this.checkCollisions();
+            this.checkCollectableCollection();  // Prüfe, ob einsammelbare Objekte eingesammelt werden
             this.checkThrowObjects();
-        }, 1000);
+        }, 1000 / 5);
+    }
+
+    checkCollectableCollection() {
+        this.level.collectables.forEach((collectable, collectableIndex) => {
+            if (this.character.isColliding(collectable)) {
+                console.log(`${collectable.type} eingesammelt!`);
+                this.level.collectables.splice(collectableIndex, 1);  // Entferne das Objekt, nachdem es eingesammelt wurde
+            }
+        });
+    }
+
+    draw() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        this.ctx.translate(this.camera_x, 0);
+        this.addObjectsToMap(this.level.backgroundObjects);
+
+        this.ctx.translate(-this.camera_x, 0);
+        this.addToMap(this.statusBar);
+        this.ctx.translate(this.camera_x, 0);
+
+        this.addToMap(this.character);
+        this.addObjectsToMap(this.level.clouds);
+        this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.throwableObjects);
+        this.addObjectsToMap(this.level.collectables);  // Sammelbare Objekte aus dem Level hinzufügen
+
+        this.ctx.translate(-this.camera_x, 0);
+
+        let self = this;
+        requestAnimationFrame(function () {
+            self.draw();
+        });
     }
 
     checkThrowObjects() {
@@ -73,30 +108,6 @@ class World {
         setTimeout(() => {
             this.level.enemies.splice(enemyIndex, 1);  // Entferne den Gegner nach der Animation
         }, 2000);  // Animation dauert 500ms (kannst du anpassen)
-    }
-
-    draw() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        this.ctx.translate(this.camera_x, 0);
-        this.addObjectsToMap(this.level.backgroundObjects);
-
-        this.ctx.translate(-this.camera_x, 0);
-        this.addToMap(this.statusBar);
-        this.ctx.translate(this.camera_x, 0);
-
-        this.addToMap(this.character);
-        this.addObjectsToMap(this.level.clouds);
-        this.addObjectsToMap(this.level.enemies);
-        this.addObjectsToMap(this.throwableObjects);
-
-        this.ctx.translate(-this.camera_x, 0);
-
-
-        let self = this;
-        requestAnimationFrame(function () {
-            self.draw();
-        });
     }
 
     addObjectsToMap(objects) {
