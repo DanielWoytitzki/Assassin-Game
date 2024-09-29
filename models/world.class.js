@@ -9,11 +9,23 @@ class World {
     throwableObjects = [];
     collectables = [];  // Sammlung aller einsammelbaren Objekte
     canThrow = true;
+    collectedCoins = 0;  // Anfangswert für Münzen
+    availableKnives = 5;  // Anfangswert für Messer
+
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+
+        // Münz-Icon laden
+        this.coinIcon = new Image();
+        this.coinIcon.src = 'img/8_coin/coin_1.png';  // Pfad zum Münz-Icon-Bild
+
+        // Messer-Icon laden
+        this.knifeIcon = new Image();
+        this.knifeIcon.src = 'img/knife/PNG/knife.png';  // Pfad zum Messer-Icon-Bild
+
         this.draw();
         this.setWorld();
         this.run();
@@ -36,16 +48,18 @@ class World {
         this.level.collectables.forEach((collectable, collectableIndex) => {
             if (this.character.isColliding(collectable)) {
                 console.log(`${collectable.type} eingesammelt!`);
-    
+
                 // Spiele den Sound ab, wenn das Collectable ein Sound-Feature hat
                 if (collectable.type === 'coin') {
+                    this.collectedCoins++;  // Münzenanzahl erhöhen
                     collectable.playCollectSound();
                 }
 
                 if (collectable.type === 'knife') {
+                    this.availableKnives++;  // Messeranzahl erhöhen
                     collectable.playCollectSound();
                 }
-    
+
                 this.level.collectables.splice(collectableIndex, 1);  // Entferne das Objekt, nachdem es eingesammelt wurde
             }
         });
@@ -69,10 +83,31 @@ class World {
 
         this.ctx.translate(-this.camera_x, 0);
 
+        this.drawCollectableCount();
+
         let self = this;
         requestAnimationFrame(function () {
             self.draw();
         });
+    }
+
+    drawCollectableCount() {
+        // Prüfen, ob die Bilder geladen sind, bevor wir sie zeichnen
+        if (this.coinIcon.complete && this.knifeIcon.complete) {
+            // Münz-Icon zeichnen
+            this.ctx.drawImage(this.coinIcon, -17, 20, 120, 120);  // Münz-Icon (X: 20, Y: 50, Größe: 40x40)
+    
+            // Messer-Icon zeichnen
+            this.ctx.drawImage(this.knifeIcon, 20, 105, 40, 40);  // Messer-Icon (X: 20, Y: 100, Größe: 40x40)
+    
+            // Anzahl der Münzen neben dem Münz-Icon zeichnen
+            this.ctx.font = "32px Arial";
+            this.ctx.fillStyle = "white";
+            this.ctx.fillText(this.collectedCoins, 70, 90);  // Zahl für Münzen (X: 70, Y: 80)
+    
+            // Anzahl der Messer neben dem Messer-Icon zeichnen
+            this.ctx.fillText(this.availableKnives, 70, 135);  // Zahl für Messer (X: 70, Y: 130)
+        }
     }
 
     checkThrowObjects() {
@@ -81,7 +116,7 @@ class World {
             this.throwableObjects.push(knife);
             this.canThrow = false;  // Verhindert, dass das Messer kontinuierlich geworfen wird
         }
-    
+
         // Setze canThrow auf true zurück, wenn die Taste losgelassen wird
         if (!this.keyboard.RSHIFT) {
             this.canThrow = true;
@@ -96,7 +131,7 @@ class World {
                 this.statusBar.setPercentage(this.character.energy);
             }
         });
-    
+
         // Prüfe Kollisionen zwischen geworfenen Objekten (Messer) und Gegnern
         this.throwableObjects.forEach((throwableObject, throwableIndex) => {
             for (let enemyIndex = 0; enemyIndex < this.level.enemies.length; enemyIndex++) {
@@ -105,7 +140,7 @@ class World {
                     this.handleEnemyDeath(enemy, enemyIndex);  // Feind stirbt bei Treffer
                     this.throwableObjects.splice(throwableIndex, 1);  // Messer verschwindet nach dem Treffer
                     console.log('Gegner von Messer getroffen!');
-    
+
                     // Beende die Schleife, sobald ein Gegner getroffen wurde
                     return;
                 }
