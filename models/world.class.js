@@ -32,9 +32,20 @@ class World {
     }
 
     checkCollectableCollection() {
+        console.log("checkCollectableCollection wird aufgerufen");  // Debug-Ausgabe
         this.level.collectables.forEach((collectable, collectableIndex) => {
             if (this.character.isColliding(collectable)) {
                 console.log(`${collectable.type} eingesammelt!`);
+    
+                // Spiele den Sound ab, wenn das Collectable ein Sound-Feature hat
+                if (collectable.type === 'coin') {
+                    collectable.playCollectSound();
+                }
+
+                if (collectable.type === 'knife') {
+                    collectable.playCollectSound();
+                }
+    
                 this.level.collectables.splice(collectableIndex, 1);  // Entferne das Objekt, nachdem es eingesammelt wurde
             }
         });

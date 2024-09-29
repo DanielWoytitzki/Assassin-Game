@@ -17,10 +17,18 @@ class DrawableObject {
     }
 
     drawFrame(ctx) {
-        if (this instanceof Character || this instanceof Enemy) {
+        if (this instanceof Character || this instanceof Enemy || this instanceof CollectableObject) {
             ctx.beginPath();
             ctx.lineWidth = '5';
-            ctx.strokeStyle = 'blue';
+    
+            // Unterschiedliche Farben für verschiedene Objekte
+            if (this instanceof Character) {
+                ctx.strokeStyle = 'blue';
+            } else if (this instanceof Enemy) {
+                ctx.strokeStyle = 'green';
+            } else if (this instanceof CollectableObject) {
+                ctx.strokeStyle = 'red';  // Rote Rahmen für Collectables
+            }
     
             let offsetX = (this.width - this.hitboxWidth) / 2;
             let offsetY = (this.height - this.hitboxHeight) / 2;
