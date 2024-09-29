@@ -30,10 +30,8 @@ window.addEventListener("keydown", (event) => {
         keyboard.SPACE = true;
     }
 
-    if (event.keyCode == 16 && world.canThrow) {  // Shift gedrückt und Messer werfen möglich
-        let knife = new ThrowableObject(world.character.x + 100, world.character.y + 100);
-        world.throwableObjects.push(knife);
-        world.canThrow = false;  // Verhindert kontinuierliches Werfen
+    if (event.keyCode == 16) {  // Wenn Shift gedrückt wird
+        keyboard.RSHIFT = true;  // Setze RSHIFT auf true
     }
 });
 
@@ -58,8 +56,8 @@ window.addEventListener("keyup", (event) => {
         keyboard.SPACE = false;
     }
 
-    if (event.keyCode == 16) {
-        keyboard.RSHIFT = false;
-        world.canThrow = true;  // Setzt die Möglichkeit zurück, beim nächsten Tastendruck zu werfen
+    if (event.keyCode == 16) {  // Wenn Shift losgelassen wird
+        keyboard.RSHIFT = false;  // Setze RSHIFT auf false
+        world.canThrow = true;  // Setze canThrow auf true zurück
     }
 });

@@ -111,18 +111,18 @@ class World {
     }
 
     checkThrowObjects() {
-        if (this.keyboard.RSHIFT && this.canThrow) {
+        if (this.keyboard.RSHIFT && this.canThrow && this.availableKnives > 0) {  // Nur wenn Messer verfügbar sind
             let knife = new ThrowableObject(this.character.x + 100, this.character.y + 100);
             this.throwableObjects.push(knife);
-            this.canThrow = false;  // Verhindert, dass das Messer kontinuierlich geworfen wird
+            this.canThrow = false;  // Verhindert kontinuierliches Werfen
+            this.availableKnives--;  // Zähle ein Messer vom Count herunter
         }
-
-        // Setze canThrow auf true zurück, wenn die Taste losgelassen wird
+    
         if (!this.keyboard.RSHIFT) {
-            this.canThrow = true;
+            this.canThrow = true;  // Setze die Wurf-Freigabe zurück, wenn die Taste losgelassen wird
         }
     }
-
+    
     checkCollisions() {
         // Prüfe Kollisionen zwischen dem Charakter und Gegnern
         this.level.enemies.forEach((enemy, enemyIndex) => {
