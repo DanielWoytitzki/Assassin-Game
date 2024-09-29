@@ -11,6 +11,7 @@ class World {
     canThrow = true;
     collectedCoins = 0;  // Anfangswert für Münzen
     availableKnives = 5;  // Anfangswert für Messer
+    backgroundMusic = new Audio('audio/background.mp3');
 
 
     constructor(canvas, keyboard) {
@@ -25,6 +26,10 @@ class World {
         // Messer-Icon laden
         this.knifeIcon = new Image();
         this.knifeIcon.src = 'img/knife/PNG/knife.png';  // Pfad zum Messer-Icon-Bild
+
+        this.backgroundMusic.loop = true;  // Schleife aktivieren, damit die Musik wiederholt wird
+        this.backgroundMusic.volume = 0.5;  // Lautstärke auf 50% setzen (anpassbar)
+        this.backgroundMusic.play();  // Musik abspielen
 
         this.draw();
         this.setWorld();
@@ -111,11 +116,22 @@ class World {
     }
 
     checkThrowObjects() {
-        if (this.keyboard.RSHIFT && this.canThrow && this.availableKnives > 0) {  // Nur wenn Messer verfügbar sind
+        const throwSound = new Audio('audio/knife-throw.mp3');  // Erstelle das Audio-Objekt für den Messersound
+       
+        if (this.keyboard.RSHIFT && this.canThrow && this.availableKnives > 0) {
+            console.log("Bedingung erfüllt: Messer kann geworfen werden");
+            
+            // Messer werfen
             let knife = new ThrowableObject(this.character.x + 100, this.character.y + 100);
             this.throwableObjects.push(knife);
+    
+            // Sound abspielen
+            throwSound.play();
+    
+            // Messeranzahl und CanThrow aktualisieren
             this.canThrow = false;  // Verhindert kontinuierliches Werfen
             this.availableKnives--;  // Zähle ein Messer vom Count herunter
+            console.log(`Messer geworfen! Verfügbare Messer nach dem Wurf: ${this.availableKnives}`);
         }
     
         if (!this.keyboard.RSHIFT) {
@@ -150,10 +166,14 @@ class World {
 
     // Diese Methode gehört ebenfalls zur World-Klasse
     handleEnemyDeath(enemy, enemyIndex) {
+        const deathSound = new Audio('audio/enemy-dead.mp3');  // Erstelle das Audio-Objekt für den Todessound
+    
+        deathSound.play();  // Spiele den Todessound ab
+    
         enemy.playDeathAnimation();  // Spiele die Sterbeanimation des Gegners ab
         setTimeout(() => {
             this.level.enemies.splice(enemyIndex, 1);  // Entferne den Gegner nach der Animation
-        }, 2000);  // Animation dauert 500ms (kannst du anpassen)
+        }, 2000);  // Animation dauert 2 Sekunden (anpassbar)
     }
 
     addObjectsToMap(objects) {

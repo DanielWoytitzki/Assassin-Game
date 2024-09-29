@@ -42,11 +42,14 @@ class MovableObject extends DrawableObject {
     }
 
     hit() {
-        this.energy -= 5;
+        const hurtSound = new Audio('audio/character-damage.mp3');  // Erstelle das Audio-Objekt für den Charakterschaden
+    
+        this.energy -= 5;  // Verringere die Energie des Charakters um 5
         if (this.energy < 0) {
             this.energy = 0;
         } else {
             this.lastHit = new Date().getTime();
+            hurtSound.play();  // Spiele den Schadensound ab, wenn der Charakter getroffen wird
         }
     }
 
@@ -76,6 +79,8 @@ class MovableObject extends DrawableObject {
     }
 
     jump() {
+        const jumpSound = new Audio('audio/jump.mp3');
         this.speedY = 30;
+        jumpSound.play();
     }
 }
