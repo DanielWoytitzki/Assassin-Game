@@ -1,34 +1,164 @@
+@font-face {
+    font-family: assassin-font;
+    src: url(fonts/Assassin-2PGw.ttf);
+}
+
 body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: assassin-font;
 }
 
 canvas {
     background-color: black;
+    border: 3px solid black;
 }
 
 .startscreen {
-    position: fixed; 
-    top: 88px;
+    position: fixed;
+    top: 197px;
     width: 720px;
-    height: 480px; 
-    color: white; 
-    display: flex; 
+    height: 480px;
+    color: white;
+    display: flex;
     flex-direction: column;
-    align-items: center; 
-    justify-content: center; 
-    font-size: 40px; 
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
     z-index: 10;
     gap: 16px;
     background-image: url('img/background/PNG/Cartoon_Forest_BG_01/background-startscreen.png');
     background-position: center;
     background-size: 120%;
+    border: 3px solid black;
 }
 
-.startscreen button {
-    width: 160px;
-    height: 32px;
-    font-size: 16px; 
+button {
+    position: relative;
+    background: black;
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    border: none;
+    letter-spacing: 0.1rem;
+    font-size: 1rem;
+    padding: 1rem 3rem;
+    transition: 0.2s;
+    width: 248px;
     cursor: pointer;
+}
+
+button:hover {
+    letter-spacing: 0.2rem;
+    background: var(--clr);
+    color: var(--clr);
+    animation: box 3s infinite;
+}
+
+button::before {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    background: #272822;
+}
+
+button span {
+    position: relative;
+    z-index: 1;
+}
+
+button i {
+    position: absolute;
+    inset: 0;
+    display: block;
+}
+
+button i::before {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 2px;
+    left: 80%;
+    top: -2px;
+    border: 2px solid var(--clr);
+    background: #272822;
+    transition: 0.2s;
+}
+
+button:hover i::before {
+    width: 15px;
+    left: 20%;
+    animation: move 3s infinite;
+}
+
+button i::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 2px;
+    left: 20%;
+    bottom: -2px;
+    border: 2px solid var(--clr);
+    background: #272822;
+    transition: 0.2s;
+}
+
+button:hover i::after {
+    width: 15px;
+    left: 80%;
+    animation: move 3s infinite;
+}
+
+@keyframes move {
+    0% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes box {
+    0% {
+        box-shadow: #27272c;
+    }
+
+    50% {
+        box-shadow: 0 0 25px var(--clr);
+    }
+
+    100% {
+        box-shadow: #27272c;
+    }
+}
+
+.tutorial-section {
+    display: flex;
+    gap: 80px;
+}
+
+.tutorial-content-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.tutorial-content-box img {
+    width: 176px;
+}
+
+.tutorial-content-box p {
+    height: 160px;
+    width: 120px;
+    margin-top: 0;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
 }

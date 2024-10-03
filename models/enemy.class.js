@@ -70,7 +70,7 @@ class Enemy extends MovableObject {
     
     constructor() {
         super();
-        this.hitboxWidth = this.width * 0.4;
+        this.hitboxWidth = this.width * 0.3;
         this.hitboxHeight = this.height * 0.55;
         this.loadImage('img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_1/Walk/0_Warrior_Walk_000.png');
         this.loadImages(this.IMAGES_WALKING);

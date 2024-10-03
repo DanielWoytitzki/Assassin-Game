@@ -19,6 +19,28 @@ function showStartScreen() {
     });
 }
 
+function showTutorial() {
+    let content = document.getElementById('keybindsDiv');
+
+    content.innerHTML = `
+    <h2 style="text-align: center; font-size: 40px; margin-bottom: 8px;">How to play</h1>
+    <div class="tutorial-section">
+        <div class="tutorial-content-box">
+            <img src="img/icons/buttons.png">
+            <p>Use the left and right arrow keys to move</p>
+        </div>
+        <div class="tutorial-content-box">
+            <img src="img/icons/keyboard.png">
+            <p>Use the space bar to jump</p>
+        </div>
+        <div class="tutorial-content-box">
+            <img src="img/icons/shift.png">
+            <p>Use the right Shift key to throw your kunai</p>
+        </div>
+    </div>
+    `;
+}
+
 function startGame() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);

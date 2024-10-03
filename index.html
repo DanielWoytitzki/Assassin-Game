@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,20 +22,23 @@
     <script src="./levels/level1.js"></script>
     <script src="./js/game.js"></script>
 </head>
+
 <body onload="init()">
 
     <!-- Startbildschirm (Startscreen) -->
     <div class="startscreen" id="startScreen">
-        <button id="startButton">Start Game</button>
-        <button>How to play</button>
-        <button>Settings</button>
+        <button id="startButton" style="--clr:#22B14C"><span>Start Game</span><i></i></button>
+        <button onclick="showTutorial()" style="--clr:#22B14C"><span>How to play</span><i></i></button>
+        <button onclick="alert('Feature coming soon!')" style="--clr:#22B14C"><span>Settings</span><i></i></button>
     </div>
 
-    <h1>Assassin's Game</h1>
-    
+    <h1 style="font-size: 80px;">Assassin's Game</h1>
 
     <canvas id="canvas" width="720" height="480">
 
     </canvas>
+
+    <div id="keybindsDiv"></div>
 </body>
+
 </html>

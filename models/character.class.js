@@ -62,7 +62,7 @@ class Character extends MovableObject {
 
     constructor() {
         super();
-        this.hitboxWidth = this.width * 0.4;  // Setze die Hitbox für den Charakter
+        this.hitboxWidth = this.width * 0.3;  // Setze die Hitbox für den Charakter
         this.hitboxHeight = this.height * 0.5;  // Setze die Hitbox für den Charakter
     
         // Spezifischer Offset für den Charakter
