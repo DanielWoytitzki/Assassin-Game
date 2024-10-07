@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>El pollo loco</title>
+    <title>Assassin's Game</title>
     <script src="./models/drawable-object.class.js"></script>
     <script src="./models/movable-object.class.js"></script>
     <script src="./models/character.class.js"></script>
@@ -27,7 +27,7 @@
 
     <!-- Startbildschirm (Startscreen) -->
     <div class="startscreen" id="startScreen">
-        <button id="startButton" style="--clr:#22B14C"><span>Start Game</span><i></i></button>
+        <button onclick="initLevel()" id="startButton" style="--clr:#22B14C"><span>Start Game</span><i></i></button>
         <button onclick="showTutorial()" style="--clr:#22B14C"><span>How to play</span><i></i></button>
         <button onclick="alert('Feature coming soon!')" style="--clr:#22B14C"><span>Settings</span><i></i></button>
     </div>
@@ -37,6 +37,11 @@
     <canvas id="canvas" width="720" height="480">
 
     </canvas>
+
+    <div class="gameoverscreen" id="gameOverScreen">
+        Game Over
+        <button onclick="window.location.reload();" style="--clr:#22B14C; width: 260px;"><span>Restart Game</span><i></i></button>
+    </div>
 
     <div id="keybindsDiv"></div>
 </body>

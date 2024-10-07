@@ -41,11 +41,28 @@ class World {
     }
 
     run() {
-        setInterval(() => {
+        this.gameInterval =setInterval(() => {
             this.checkCollisions();
             this.checkCollectableCollection();  // Prüfe, ob einsammelbare Objekte eingesammelt werden
             this.checkThrowObjects();
+            this.checkGameOver();
         }, 1000 / 5);
+    }
+
+    checkGameOver() {
+        if (this.character.isDead()) {
+            this.showGameOverScreen();
+            this.stopGame();  // Pausiere das Spiel
+        }
+    }
+    
+    showGameOverScreen() {
+        document.getElementById('gameOverScreen').style.display = 'flex';
+    }
+    
+    stopGame() {
+        clearInterval(this.gameInterval);
+        this.backgroundMusic.pause();
     }
 
     checkCollectableCollection() {

@@ -26,12 +26,27 @@ canvas {
     align-items: center;
     justify-content: center;
     font-size: 40px;
-    z-index: 10;
     gap: 16px;
     background-image: url('img/background/PNG/Cartoon_Forest_BG_01/background-startscreen.png');
     background-position: center;
     background-size: 120%;
     border: 3px solid black;
+}
+
+.gameoverscreen {
+    display: none; 
+    position: fixed; 
+    top: 197px; 
+    width: 720px; 
+    height: 480px; 
+    background: rgba(0, 0, 0, 0.8); 
+    color: white; 
+    text-align: center; 
+    font-size: 80px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 24px;
 }
 
 button {
