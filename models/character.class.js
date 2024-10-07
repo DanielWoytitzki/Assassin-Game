@@ -2,6 +2,7 @@ class Character extends MovableObject {
 
     speed = 3;
     y = -200;
+    idleTimer = 0;
 
     IMAGES_IDLE = [
         'img/character-rogue/Idle/idle1.png',
@@ -74,28 +75,31 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_JUMPING);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
+        this.loadImages(this.IMAGES_IDLE);
         this.applyGravity();
         this.animate();
     }
 
     animate() {
-
         setInterval(() => {
             this.walking_sound.pause();
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
                 this.moveRight();
                 this.otherDirection = false;
                 this.walking_sound.play();
+                this.idleTimer = 0;
             }
 
             if (this.world.keyboard.LEFT && this.x > 0) {
                 this.moveLeft();
                 this.otherDirection = true;
                 this.walking_sound.play();
+                this.idleTimer = 0;
             }
 
             if (this.world.keyboard.SPACE && !this.isAboveGround()) {
                 this.jump();
+                this.idleTimer = 0;
             }
             this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
@@ -105,11 +109,17 @@ class Character extends MovableObject {
                 this.playAnimation(this.IMAGES_DEAD);
             } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
+                this.idleTimer = 0;
             } else if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
+                this.idleTimer = 0;
+            } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+                this.playAnimation(this.IMAGES_WALKING);
+                this.idleTimer = 0;  // Bewegung aktiv, also Idle-Timer zurücksetzen
             } else {
-                if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-                    this.playAnimation(this.IMAGES_WALKING);
+                this.idleTimer += 100;  // Timer hochzählen, wenn keine Bewegung aktiv ist (100ms Schritt)
+                if (this.idleTimer > 2000) {  // Idle-Animation erst nach 2 Sekunden abspielen
+                    this.playAnimation(this.IMAGES_IDLE);
                 }
             }
         }, 1000 / 10);
