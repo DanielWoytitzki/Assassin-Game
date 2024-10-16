@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html translate="no" lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -24,13 +24,17 @@
     <script src="./js/game.js"></script>
 </head>
 
-<body onload="init()">
+<body>
 
     <!-- Startbildschirm (Startscreen) -->
     <div class="startscreen" id="startScreen">
-        <button onclick="initLevel()" id="startButton" style="--clr:#22B14C"><span>Start Game</span><i></i></button>
+        <button onclick="init()" id="startButton" style="--clr:#22B14C"><span>Start Game</span><i></i></button>
         <button onclick="showTutorial()" style="--clr:#22B14C"><span>How to play</span><i></i></button>
         <button onclick="alert('Feature coming soon!')" style="--clr:#22B14C"><span>Settings</span><i></i></button>
+    </div>
+
+    <div class="loadingscreen" id="loadingScreen">
+        Loading...
     </div>
 
     <h1 style="font-size: 80px;">Assassin's Game</h1>

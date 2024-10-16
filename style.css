@@ -33,6 +33,19 @@ canvas {
     border: 3px solid black;
 }
 
+.loadingscreen {
+    position: fixed;
+    top: 197px;
+    width: 720px;
+    height: 480px; 
+    display: none;
+    justify-content: center; 
+    align-items: center; 
+    background-color: black; 
+    color: white; 
+    font-size: 48px; 
+}
+
 .gameoverscreen {
     display: none; 
     position: fixed; 

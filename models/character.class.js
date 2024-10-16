@@ -83,27 +83,33 @@ class Character extends MovableObject {
     animate() {
         setInterval(() => {
             this.walking_sound.pause();
-            if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-                this.moveRight();
-                this.otherDirection = false;
-                this.walking_sound.play();
-                this.idleTimer = 0;
+            if (this.world && this.world.keyboard) {
+                if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+                    this.moveRight();
+                    this.otherDirection = false;
+                    this.walking_sound.play();
+                    this.idleTimer = 0;
+                }
+    
+                if (this.world.keyboard.LEFT && this.x > 0) {
+                    this.moveLeft();
+                    this.otherDirection = true;
+                    this.walking_sound.play();
+                    this.idleTimer = 0;
+                }
+    
+                if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+                    this.jump();
+                    this.idleTimer = 0;
+                }
+    
+                // Setze die Kameraposition, falls die Welt definiert ist
+                if (this.world) {
+                    this.world.camera_x = -this.x + 100;
+                }
             }
-
-            if (this.world.keyboard.LEFT && this.x > 0) {
-                this.moveLeft();
-                this.otherDirection = true;
-                this.walking_sound.play();
-                this.idleTimer = 0;
-            }
-
-            if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-                this.jump();
-                this.idleTimer = 0;
-            }
-            this.world.camera_x = -this.x + 100;
         }, 1000 / 60);
-
+    
         setInterval(() => {
             if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
@@ -113,7 +119,7 @@ class Character extends MovableObject {
             } else if (this.isAboveGround()) {
                 this.playAnimation(this.IMAGES_JUMPING);
                 this.idleTimer = 0;
-            } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+            } else if (this.world && (this.world.keyboard.RIGHT || this.world.keyboard.LEFT)) {
                 this.playAnimation(this.IMAGES_WALKING);
                 this.idleTimer = 0;  // Bewegung aktiv, also Idle-Timer zurücksetzen
             } else {
@@ -124,4 +130,4 @@ class Character extends MovableObject {
             }
         }, 1000 / 10);
     }
-}
+}    
