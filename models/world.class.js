@@ -159,7 +159,7 @@ class World {
     checkCollisions() {
         // Prüfe Kollisionen zwischen dem Charakter und Gegnern
         this.level.enemies.forEach((enemy, enemyIndex) => {
-            if (this.character.isColliding(enemy) && !enemy.isDead) {
+            if (this.character.isColliding(enemy)) {
                 this.character.hit();  // Der Charakter nimmt Schaden
                 this.statusBar.setPercentage(this.character.energy);
             }
@@ -169,13 +169,15 @@ class World {
         this.throwableObjects.forEach((throwableObject, throwableIndex) => {
             for (let enemyIndex = 0; enemyIndex < this.level.enemies.length; enemyIndex++) {
                 let enemy = this.level.enemies[enemyIndex];
-                if (throwableObject.isColliding(enemy) && !enemy.isDead) {
-                    this.handleEnemyDeath(enemy, enemyIndex);  // Feind stirbt bei Treffer
-                    this.throwableObjects.splice(throwableIndex, 1);  // Messer verschwindet nach dem Treffer
-                    console.log('Gegner von Messer getroffen!');
-    
-                    // Beende die Schleife, sobald ein Gegner getroffen wurde
-                    break;
+                if (throwableObject.isColliding(enemy)) {
+                    if (enemy instanceof Endboss) {
+                        console.log('Endboss getroffen!');
+                        enemy.takeDamage();
+                    } else {
+                        this.handleEnemyDeath(enemy, enemyIndex);
+                    }
+                    this.throwableObjects.splice(throwableIndex, 1); // Messer verschwindet nach dem Treffer
+                    return;
                 }
             }
         });
@@ -201,7 +203,21 @@ class World {
                 console.log('Gegner aus Array entfernt');
             }
         }, 2000);  // Animation dauert 2 Sekunden (anpassbar)
-    }    
+    }
+    
+    handleBossDeath() {
+        const deathSound = new Audio('audio/boss-dead.mp3');  // Optional: Erstelle das Audio-Objekt für den Todessound
+    
+        deathSound.play();  // Spiele den Todessound ab
+    
+        this.level.endboss.playDeathAnimation();  // Spiele die Sterbeanimation des Endbosses ab
+        setTimeout(() => {
+            // Entferne den Endboss nach der Animation
+            this.level.endboss = null;  // Setze den Endboss auf null, um ihn zu "entfernen"
+            console.log("Endboss entfernt, Level abgeschlossen!");
+            // Hier könntest du auch den Level-Abschluss behandeln (z.B. Übergang zu einer End-Szene).
+        }, 3000);  // Animation dauert 3 Sekunden (anpassbar)
+    }
 
     addObjectsToMap(objects) {
         objects.forEach(o => {
