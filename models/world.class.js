@@ -159,39 +159,49 @@ class World {
     checkCollisions() {
         // Prüfe Kollisionen zwischen dem Charakter und Gegnern
         this.level.enemies.forEach((enemy, enemyIndex) => {
-            if (this.character.isColliding(enemy)) {
+            if (this.character.isColliding(enemy) && !enemy.isDead) {
                 this.character.hit();  // Der Charakter nimmt Schaden
                 this.statusBar.setPercentage(this.character.energy);
             }
         });
-
+    
         // Prüfe Kollisionen zwischen geworfenen Objekten (Messer) und Gegnern
         this.throwableObjects.forEach((throwableObject, throwableIndex) => {
             for (let enemyIndex = 0; enemyIndex < this.level.enemies.length; enemyIndex++) {
                 let enemy = this.level.enemies[enemyIndex];
-                if (throwableObject.isColliding(enemy)) {
+                if (throwableObject.isColliding(enemy) && !enemy.isDead) {
                     this.handleEnemyDeath(enemy, enemyIndex);  // Feind stirbt bei Treffer
                     this.throwableObjects.splice(throwableIndex, 1);  // Messer verschwindet nach dem Treffer
                     console.log('Gegner von Messer getroffen!');
-
+    
                     // Beende die Schleife, sobald ein Gegner getroffen wurde
-                    return;
+                    break;
                 }
             }
         });
     }
-
+    
     // Diese Methode gehört ebenfalls zur World-Klasse
     handleEnemyDeath(enemy, enemyIndex) {
+        if (enemy.isDead) {
+            return; // Wenn der Gegner schon tot ist, tu nichts.
+        }
+        
+        enemy.isDead = true;  // Markiere den Gegner als "tot", um doppelte Treffer zu vermeiden.
         const deathSound = new Audio('audio/enemy-dead.mp3');  // Erstelle das Audio-Objekt für den Todessound
-    
         deathSound.play();  // Spiele den Todessound ab
     
         enemy.playDeathAnimation();  // Spiele die Sterbeanimation des Gegners ab
+    
+        // Entferne den Gegner nach Ablauf der Sterbeanimation
         setTimeout(() => {
-            this.level.enemies.splice(enemyIndex, 1);  // Entferne den Gegner nach der Animation
+            let index = this.level.enemies.indexOf(enemy);
+            if (index > -1) {
+                this.level.enemies.splice(index, 1);  // Entferne den Gegner aus dem Array
+                console.log('Gegner aus Array entfernt');
+            }
         }, 2000);  // Animation dauert 2 Sekunden (anpassbar)
-    }
+    }    
 
     addObjectsToMap(objects) {
         objects.forEach(o => {
