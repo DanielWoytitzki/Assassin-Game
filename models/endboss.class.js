@@ -5,6 +5,8 @@ class Endboss extends MovableObject {
     health = 4;
     maxHealth = 4;
     healthBar;
+    isHurt = false;
+    isDead = false;
 
     IMAGES_WALKING = [
         'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Communication/0_Warrior_Communication_000.png',
@@ -39,64 +41,128 @@ class Endboss extends MovableObject {
         'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Communication/0_Warrior_Communication_029.png'
     ];
 
+    IMAGES_HURT = [
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Hurt/0_Warrior_Hurt_000.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Hurt/0_Warrior_Hurt_001.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Hurt/0_Warrior_Hurt_002.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Hurt/0_Warrior_Hurt_003.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Hurt/0_Warrior_Hurt_004.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Hurt/0_Warrior_Hurt_005.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Hurt/0_Warrior_Hurt_006.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Hurt/0_Warrior_Hurt_007.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Hurt/0_Warrior_Hurt_008.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Hurt/0_Warrior_Hurt_009.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Hurt/0_Warrior_Hurt_010.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Hurt/0_Warrior_Hurt_011.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Hurt/0_Warrior_Hurt_012.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Hurt/0_Warrior_Hurt_013.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Hurt/0_Warrior_Hurt_014.png'
+    ];
+
+    IMAGES_DEATH = [
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_000.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_001.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_002.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_003.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_004.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_005.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_006.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_007.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_008.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_009.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_010.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_011.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_012.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_013.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_014.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_015.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_016.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_017.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_018.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_019.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_020.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_021.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_022.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_023.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_024.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_025.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_026.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_027.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_028.png',
+        'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_029.png'
+    ];
+
+    hurtSound = new Audio('audio/hurt-sound-endboss.mp3');
+    deathSound = new Audio('audio/enemy-dead.mp3'); // Pfad zum Sterbe-Sound
+
+
     constructor() {
         super().loadImage(this.IMAGES_WALKING[0]);
         this.loadImages(this.IMAGES_WALKING);
+        this.loadImages(this.IMAGES_HURT);
+        this.loadImages(this.IMAGES_DEATH);
         this.x = 2400;
 
-        // Hier die Hitbox anpassen (kannst die Werte variieren, um die beste Passform zu finden)
-        this.hitboxOffsetX = 150; // Versatz nach rechts
-        this.hitboxOffsetY = 100; // Versatz nach unten
-        this.hitboxWidth = this.width - 300; // Angepasste Breite der Hitbox
-        this.hitboxHeight = this.height - 200; // Angepasste Höhe der Hitbox
-
         this.healthBar = new BossHealthBar(this); // Initialisiere die HealthBar
-        this.animate();
-    }
 
-    animate() {
-        setInterval(() => {
-            this.playAnimation(this.IMAGES_WALKING);
-        }, 1000 / 20);
+        this.animate();
     }
 
     draw(ctx) {
         super.draw(ctx); // Zeichnet den Boss selbst
         this.healthBar.draw(ctx); // Zeichnet die HealthBar über dem Boss
-        this.drawHitbox(ctx);
-    }
-
-    drawHitbox(ctx) {
-        ctx.beginPath();
-        ctx.lineWidth = "3";
-        ctx.strokeStyle = "red";
-
-        let hitboxX = this.x + this.hitboxOffsetX;
-        let hitboxY = this.y + this.hitboxOffsetY;
-
-        ctx.rect(hitboxX, hitboxY, this.hitboxWidth, this.hitboxHeight);
-        ctx.stroke();
-    }
-
-    getHitbox() {
-        return {
-            x: this.x + this.hitboxOffsetX,
-            y: this.y + this.hitboxOffsetY,
-            width: this.hitboxWidth,
-            height: this.hitboxHeight,
-        };
     }
 
     takeDamage() {
-        this.health--;
-        if (this.health <= 0) {
-            this.health = 0;
+        if (this.health > 0 && !this.isDead) {
+            this.health--;
+            console.log(`Endboss getroffen! Lebenspunkte: ${this.health}`);
+            this.playHurtAnimation();
+        }
+        if (this.health <= 0 && !this.isDead) {
             this.playDeathAnimation();
         }
     }
 
+    animate() {
+        setInterval(() => {
+            if (this.health > 0 && !this.isDead) {
+                // Spiele nur dann die normale Animation ab, wenn der Boss nicht verletzt oder sterbend ist
+                if (!this.isHurt) {
+                    this.playAnimation(this.IMAGES_WALKING);
+                }
+            }
+        }, 1000 / 20);
+    }
+
+    playHurtAnimation() {
+        this.isHurt = true;  // Setze Zustand auf "verletzt"
+        this.hurtSound.play();
+        this.playAnimation(this.IMAGES_HURT);
+
+        // Nach kurzer Zeit zurück zur normalen Animation wechseln
+        setTimeout(() => {
+            this.isHurt = false;  // Zustand wieder auf normal setzen
+        }, 1000); // 1000 ms für die Treffer-Animation
+    }
+
     playDeathAnimation() {
         console.log("Endboss ist besiegt!");
-        // Hier kannst du die Sterbeanimation für den Endboss hinzufügen
+        this.isDead = true; // Setze Zustand auf "sterbend"
+        this.deathSound.play();  // Spiele den Sterbe-Sound ab
+
+        let animationIndex = 0;
+        const deathAnimationInterval = setInterval(() => {
+            if (animationIndex < this.IMAGES_DEATH.length) {
+                this.img = this.imageCache[this.IMAGES_DEATH[animationIndex]];
+                animationIndex++;
+            } else {
+                clearInterval(deathAnimationInterval);
+                // Nach der Animation können wir den Endboss als "tot" markieren oder entfernen
+                this.dead = true;
+                console.log("Endboss ist vollständig besiegt!");
+                // Hier könnte man Logik einfügen, um den Endboss aus dem Level zu entfernen
+            }
+        }, 1000 / 20); // Zeitintervall zwischen den Bildern der Sterbeanimation
     }
 }

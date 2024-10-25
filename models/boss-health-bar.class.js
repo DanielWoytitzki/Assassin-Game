@@ -4,7 +4,7 @@ class BossHealthBar {
         this.width = 100;  // Breite des Lebensbalkens
         this.height = 10;  // Höhe des Lebensbalkens
         this.offsetX = boss.width / 2 - this.width / 2;  // Zentriere den Balken über dem Boss
-        this.offsetY = -20;  // Abstand über dem Kopf des Bosses
+        this.offsetY = 50;  // Abstand über dem Kopf des Bosses
     }
 
     draw(ctx) {
