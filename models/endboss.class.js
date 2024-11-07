@@ -106,6 +106,36 @@ class Endboss extends MovableObject {
         this.healthBar = new BossHealthBar(this); // Initialisiere die HealthBar
 
         this.animate();
+        this.startThrowingBombs(); // Hier wird das Bombenwerfen gestartet
+    }
+
+    throwBomb() {
+        if (this.world) {
+            console.log('Endboss versucht, eine Bombe zu werfen!');
+            let bombX = this.x + 100;  // Position links vom Boss
+            let bombY = this.y + this.height / 10;
+
+            let bomb = new Bomb(bombX, bombY);
+            if (bomb) {
+                this.world.bossBombs.push(bomb);  // Füge die Bombe zur bossBombs-Sammlung hinzu
+                console.log('Bombe erfolgreich hinzugefügt:', bomb);
+            } else {
+                console.log('Fehler: Bombe konnte nicht erstellt werden.');
+            }
+        } else {
+            console.log('Fehler: Endboss hat keine Referenz zur Welt.');
+        }
+
+        // Wurfsound hinzufügen
+        const throwSound = new Audio('audio/throw-bomb.mp3'); // Pfad zu deinem Wurfsound
+        throwSound.play();  // Spiele den Wurfsound ab
+    }
+
+    startThrowingBombs() {
+        console.log('Start Throwing Bombs wird aufgerufen');
+        setInterval(() => {
+            this.throwBomb();
+        }, 5000);  // Wirft alle 3 Sekunden eine Bombe
     }
 
     draw(ctx) {
@@ -133,6 +163,12 @@ class Endboss extends MovableObject {
                 }
             }
         }, 1000 / 20);
+
+        setInterval(() => {
+            if (this.world && this.x - this.world.character.x < 500) {  // Falls der Charakter in der Nähe ist (500 px)
+                this.startThrowingBombs();
+            }
+        }, 1000);
     }
 
     playHurtAnimation() {
