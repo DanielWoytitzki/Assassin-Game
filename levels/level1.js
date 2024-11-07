@@ -40,7 +40,12 @@ function initLevel() {
             new BackgroundObject('img/background/PNG/Cartoon_Forest_BG_01/Layers/BG_Decor.png', 2160),
             new BackgroundObject('img/background/PNG/Cartoon_Forest_BG_01/Layers/Middle_Decor.png', 2160),
             new BackgroundObject('img/background/PNG/Cartoon_Forest_BG_01/Layers/Foreground.png', 2160),
-            new BackgroundObject('img/background/PNG/Cartoon_Forest_BG_01/Layers/Ground.png', 2160)
+            new BackgroundObject('img/background/PNG/Cartoon_Forest_BG_01/Layers/Ground.png', 2160),
+            new BackgroundObject('img/background/PNG/Cartoon_Forest_BG_01/Layers/Sky.png', 2880),
+            new BackgroundObject('img/background/PNG/Cartoon_Forest_BG_01/Layers/BG_Decor.png', 2880),
+            new BackgroundObject('img/background/PNG/Cartoon_Forest_BG_01/Layers/Middle_Decor.png', 2880),
+            new BackgroundObject('img/background/PNG/Cartoon_Forest_BG_01/Layers/Foreground.png', 2880),
+            new BackgroundObject('img/background/PNG/Cartoon_Forest_BG_01/Layers/Ground.png', 2880)
         ],
         [
             new CollectableObject(1050, 360, 'coin', 130, 130),

@@ -7,6 +7,7 @@ class Endboss extends MovableObject {
     healthBar;
     isHurt = false;
     isDead = false;
+    isBossMusicPlaying = false; // Neue Variable, um den Zustand der Musik zu verfolgen
 
     IMAGES_WALKING = [
         'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Communication/0_Warrior_Communication_000.png',
@@ -97,45 +98,78 @@ class Endboss extends MovableObject {
 
 
     constructor() {
-        super().loadImage(this.IMAGES_WALKING[0]);
-        this.loadImages(this.IMAGES_WALKING);
-        this.loadImages(this.IMAGES_HURT);
-        this.loadImages(this.IMAGES_DEATH);
-        this.x = 2400;
+        super().loadImage(this.IMAGES_WALKING[0]); // Lade das erste Bild des Endbosses
+        this.loadImages(this.IMAGES_WALKING); // Lade alle Bilder für die Geh-Animation
+        this.loadImages(this.IMAGES_HURT); // Lade alle Bilder für die Verletzungs-Animation
+        this.loadImages(this.IMAGES_DEATH); // Lade alle Bilder für die Todes-Animation
+        this.x = 2400; // Setze die Startposition des Endbosses weit rechts
 
-        this.healthBar = new BossHealthBar(this); // Initialisiere die HealthBar
-
-        this.animate();
-        this.startThrowingBombs(); // Hier wird das Bombenwerfen gestartet
+        this.healthBar = new BossHealthBar(this); // Initialisiere die HealthBar für den Endboss
+        this.animate(); // Starte die Animationen des Endbosses
     }
 
     throwBomb() {
-        if (this.world) {
+        if (this.world) { // Prüfe, ob der Endboss eine Referenz zur Welt hat
             console.log('Endboss versucht, eine Bombe zu werfen!');
-            let bombX = this.x + 100;  // Position links vom Boss
-            let bombY = this.y + this.height / 10;
+            let bombX = this.x + 100; // Setze die X-Position der Bombe etwas rechts vom Endboss
+            let bombY = this.y + this.height / 10; // Setze die Y-Position der Bombe etwas über dem Boden
 
-            let bomb = new Bomb(bombX, bombY);
+            let bomb = new Bomb(bombX, bombY); // Erstelle eine neue Bombe an den angegebenen Koordinaten
             if (bomb) {
-                this.world.bossBombs.push(bomb);  // Füge die Bombe zur bossBombs-Sammlung hinzu
+                this.world.bossBombs.push(bomb); // Füge die Bombe zur Sammlung der Bomben in der Welt hinzu
                 console.log('Bombe erfolgreich hinzugefügt:', bomb);
             } else {
                 console.log('Fehler: Bombe konnte nicht erstellt werden.');
             }
+
+            // Wurfsound hinzufügen und abspielen
+            const throwSound = new Audio('audio/throw-bomb.mp3');
+            throwSound.play();
         } else {
             console.log('Fehler: Endboss hat keine Referenz zur Welt.');
         }
+    }
 
-        // Wurfsound hinzufügen
-        const throwSound = new Audio('audio/throw-bomb.mp3'); // Pfad zu deinem Wurfsound
-        throwSound.play();  // Spiele den Wurfsound ab
+    animate() {
+        // Setze ein Intervall, um die Animationen des Endbosses regelmäßig zu aktualisieren
+        setInterval(() => {
+            if (this.health > 0 && !this.isDead) { // Prüfe, ob der Endboss noch lebt
+                if (!this.isHurt) { // Wenn der Endboss nicht verletzt ist
+                    this.playAnimation(this.IMAGES_WALKING); // Spiele die Geh-Animation ab
+                }
+
+                // Überprüfe, ob der Charakter nahe genug ist, um Bomben zu werfen
+                if (this.world && Math.abs(this.x - this.world.character.x) < 500 && !this.throwBombInterval) {
+                    this.startThrowingBombs(); // Starte das Werfen von Bomben, wenn der Charakter nah genug ist
+                }
+
+                // Überprüfe, ob der Charakter nahe genug ist, um die Boss-Musik zu starten
+                if (this.world && Math.abs(this.x - this.world.character.x) < 500) {
+                    if (!this.isBossMusicPlaying) {
+                        this.startBossMusic();
+                        this.isBossMusicPlaying = true;
+                    }
+                    this.world.bossReached = true; // Setze bossReached auf true, wenn der Boss erreicht wurde
+                }
+            }
+        }, 1000 / 20); // Aktualisiere die Animationen alle 50 ms (20 FPS)
+    }
+
+    startBossMusic() {
+        this.world.backgroundMusic.pause(); // Hintergrundmusik pausieren
+        this.world.bossMusic.currentTime = 0; // Boss-Musik auf den Anfang setzen
+        this.world.bossMusic.play(); // Boss-Musik abspielen
     }
 
     startThrowingBombs() {
-        console.log('Start Throwing Bombs wird aufgerufen');
-        setInterval(() => {
-            this.throwBomb();
-        }, 5000);  // Wirft alle 3 Sekunden eine Bombe
+        // Verhindere, dass der Timer mehrfach gesetzt wird
+        if (!this.throwBombInterval) {
+            this.throwBombInterval = setInterval(() => {
+                if (this.health > 0 && !this.isDead) { // Prüfe, ob der Endboss noch lebt
+                    this.throwBomb(); // Werfe eine Bombe
+                }
+            }, 2000); // Wirft alle 5 Sekunden eine Bombe
+        }
     }
 
     draw(ctx) {
@@ -152,23 +186,6 @@ class Endboss extends MovableObject {
         if (this.health <= 0 && !this.isDead) {
             this.playDeathAnimation();
         }
-    }
-
-    animate() {
-        setInterval(() => {
-            if (this.health > 0 && !this.isDead) {
-                // Spiele nur dann die normale Animation ab, wenn der Boss nicht verletzt oder sterbend ist
-                if (!this.isHurt) {
-                    this.playAnimation(this.IMAGES_WALKING);
-                }
-            }
-        }, 1000 / 20);
-
-        setInterval(() => {
-            if (this.world && this.x - this.world.character.x < 500) {  // Falls der Charakter in der Nähe ist (500 px)
-                this.startThrowingBombs();
-            }
-        }, 1000);
     }
 
     playHurtAnimation() {
@@ -197,7 +214,7 @@ class Endboss extends MovableObject {
                 // Nach der Animation können wir den Endboss als "tot" markieren oder entfernen
                 this.dead = true;
                 console.log("Endboss ist vollständig besiegt!");
-                // Hier könnte man Logik einfügen, um den Endboss aus dem Level zu entfernen
+                this.world.bossMusic.pause();
             }
         }, 1000 / 20); // Zeitintervall zwischen den Bildern der Sterbeanimation
     }

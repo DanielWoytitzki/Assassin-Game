@@ -92,10 +92,13 @@ class Character extends MovableObject {
                 }
     
                 if (this.world.keyboard.LEFT && this.x > 0) {
-                    this.moveLeft();
-                    this.otherDirection = true;
-                    this.walking_sound.play();
-                    this.idleTimer = 0;
+                    // Überprüfe, ob der Charakter den Boss erreicht hat und begrenze die Bewegung nach links
+                    if (!this.world.bossReached || this.x > 1800) {
+                        this.moveLeft();
+                        this.otherDirection = true;
+                        this.walking_sound.play();
+                        this.idleTimer = 0;
+                    }
                 }
     
                 if (this.world.keyboard.SPACE && !this.isAboveGround()) {

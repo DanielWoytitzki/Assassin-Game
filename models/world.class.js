@@ -12,7 +12,9 @@ class World {
     collectedCoins = 0;  // Anfangswert für Münzen
     availableKnives = 5;  // Anfangswert für Messer
     backgroundMusic = new Audio('audio/background.mp3');
+    bossMusic = new Audio('audio/endboss-music.mp3');
     bossBombs = [];
+    bossReached = false; // Neue Variable, um zu verfolgen, ob der Boss erreicht wurde
 
 
     constructor(canvas, keyboard) {
@@ -28,8 +30,13 @@ class World {
         this.knifeIcon = new Image();
         this.knifeIcon.src = 'img/knife/PNG/knife.png';  // Pfad zum Messer-Icon-Bild
 
-        this.backgroundMusic.loop = true;  // Schleife aktivieren, damit die Musik wiederholt wird
-        this.backgroundMusic.volume = 0.5;  // Lautstärke auf 50% setzen (anpassbar)
+        // Schleifen-Eigenschaften für Musik setzen
+        this.backgroundMusic.loop = true;
+        this.backgroundMusic.volume = 0.5;
+
+        this.bossMusic.loop = true;
+        this.bossMusic.volume = 0.7;
+
         this.backgroundMusic.play();  // Musik abspielen
 
         this.draw();
