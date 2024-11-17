@@ -59,6 +59,7 @@ class World {
             this.checkCollectableCollection();  // Prüfe, ob einsammelbare Objekte eingesammelt werden
             this.checkThrowObjects();
             this.checkGameOver();
+            this.checkBombCollisions();
         }, 1000 / 5);
     }
 
@@ -212,6 +213,12 @@ class World {
                 hitSound.volume = 0.5;  // Optional: Passe die Lautstärke an
                 hitSound.play();  // Spiele den Treffer-Sound ab
             }
+        });
+    }
+
+    checkBombCollisions() {
+        this.bossBombs.forEach((bomb) => {
+            bomb.checkCollisionWithCharacter(this.character); // Prüfe Kollision der Bombe mit dem Charakter
         });
     }
 

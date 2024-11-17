@@ -93,7 +93,7 @@ class Character extends MovableObject {
     
                 if (this.world.keyboard.LEFT && this.x > 0) {
                     // Überprüfe, ob der Charakter den Boss erreicht hat und begrenze die Bewegung nach links
-                    if (!this.world.bossReached || this.x > 1800) {
+                    if (!this.world.bossReached || this.x > 2000) {
                         this.moveLeft();
                         this.otherDirection = true;
                         this.walking_sound.play();

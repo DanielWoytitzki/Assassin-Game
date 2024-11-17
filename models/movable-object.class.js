@@ -42,21 +42,24 @@ class MovableObject extends DrawableObject {
     }
 
     hit() {
-        const hurtSound = new Audio('audio/character-damage.mp3');  // Erstelle das Audio-Objekt für den Charakterschaden
-    
-        this.energy -= 5;  // Verringere die Energie des Charakters um 5
+        const hurtSound = new Audio('audio/character-damage.mp3');
+        const currentTime = new Date().getTime();
+        if (currentTime - this.lastHit > 1000) { // Nur alle 1 Sekunde ein Treffer möglich
+            console.log('Character hit! Energy before:', this.energy);
+            this.energy -= 20;  // Verringere die Energie des Charakters um 20
+            console.log('Character last hit timestamp updated');
+            this.lastHit = currentTime;
+            hurtSound.play();  // Spiele den Schadensound ab, wenn der Charakter getroffen wird
+        }
         if (this.energy < 0) {
             this.energy = 0;
-        } else {
-            this.lastHit = new Date().getTime();
-            hurtSound.play();  // Spiele den Schadensound ab, wenn der Charakter getroffen wird
         }
     }
 
     isHurt() {
         let timepassed = new Date().getTime() - this.lastHit;
         timepassed = timepassed / 1000;
-        return timepassed < 1;
+        return timepassed < 0.5;  // Reduziere die Zeit, in der der Charakter als verletzt gilt, auf 0.5 Sekunden
     }
 
     isDead() {
