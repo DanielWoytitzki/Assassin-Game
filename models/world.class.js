@@ -72,6 +72,8 @@ class World {
 
     showGameOverScreen() {
         document.getElementById('gameOverScreen').style.display = 'flex';
+        const gameOverSound = new Audio('audio/game-over.mp3');
+        gameOverSound.play();
     }
 
     stopGame() {

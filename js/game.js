@@ -24,6 +24,22 @@ function hideLoadingScreen() {
     document.getElementById('loadingScreen').style.display = 'none';
 }
 
+function showWinningScreen() {
+    // Zeige den Winning Screen an
+    document.getElementById('winningScreen').style.display = 'flex';
+
+    // Spiele den Sound ab
+    const winSound = new Audio('audio/win-sound.mp3');
+    winSound.play();
+
+    // Aktualisiere die Anzeige der gesammelten Münzen
+    document.getElementById('scoreDisplay').innerText = `Coins Collected: ${world.collectedCoins}`;
+}
+
+function restartGame() {
+    window.location.reload(); // Lade das Spiel neu, wenn der Spieler "Restart Game" auswählt
+}
+
 function loadResources() {
     return new Promise((resolve) => {
         let imagesToLoad = [];

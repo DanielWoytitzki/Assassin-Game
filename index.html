@@ -47,7 +47,13 @@
 
     <div class="gameoverscreen" id="gameOverScreen">
         Game Over
-        <button onclick="window.location.reload();" style="--clr:#22B14C; width: 260px;"><span>Restart Game</span><i></i></button>
+        <button onclick="restartGame();" style="--clr:#22B14C; width: 260px;"><span>Restart Game</span><i></i></button>
+    </div>
+
+    <div class="winningscreen" id="winningScreen">
+        <h1>You Win!</h1>
+        <p id="scoreDisplay">Coins Collected: 0</p>
+        <button onclick="restartGame();" style="--clr:#22B14C; width: 260px;"><span>Restart Game</span><i></i></button>
     </div>
 
     <div id="keybindsDiv"></div>

@@ -215,6 +215,7 @@ class Endboss extends MovableObject {
                 this.dead = true;
                 console.log("Endboss ist vollständig besiegt!");
                 this.world.bossMusic.pause();
+                showWinningScreen();
             }
         }, 1000 / 20); // Zeitintervall zwischen den Bildern der Sterbeanimation
     }

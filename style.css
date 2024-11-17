@@ -62,6 +62,31 @@ canvas {
     gap: 24px;
 }
 
+.winningscreen {
+    display: none; 
+    position: fixed; 
+    top: 197px; 
+    width: 720px; 
+    height: 480px; 
+    background: rgba(0, 0, 0, 0.8); 
+    color: white; 
+    text-align: center; 
+    font-size: 24px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.winningscreen h1 {
+    font-size: 80px;
+    margin: 0;
+}
+
+.winningscreen p {
+    margin: 0;
+}
+
 button {
     position: relative;
     background: black;
