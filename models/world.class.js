@@ -10,7 +10,7 @@ class World {
     collectables = [];  // Sammlung aller einsammelbaren Objekte
     canThrow = true;
     collectedCoins = 0;  // Anfangswert für Münzen
-    availableKnives = 5;  // Anfangswert für Messer
+    availableKnives = 0;  // Anfangswert für Messer
     backgroundMusic = new Audio('audio/background.mp3');
     bossMusic = new Audio('audio/endboss-music.mp3');
     bossBombs = [];

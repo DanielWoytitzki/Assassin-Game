@@ -33,7 +33,7 @@ function showWinningScreen() {
     winSound.play();
 
     // Aktualisiere die Anzeige der gesammelten Münzen
-    document.getElementById('scoreDisplay').innerText = `Coins Collected: ${world.collectedCoins}`;
+    document.getElementById('scoreDisplay').innerText = `Coins Collected: ${world.collectedCoins} / 27`;
 }
 
 function restartGame() {
@@ -254,6 +254,7 @@ function loadResources() {
             'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_027.png',
             'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_028.png',
             'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_029.png',
+            'img/bomb/bomb.png',
             'img/8_coin/coin_1.png',
             'img/knife/PNG/knife.png',
             'img/knife/PNG/knife-removebg-preview.png'

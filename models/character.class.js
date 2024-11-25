@@ -108,7 +108,7 @@ class Character extends MovableObject {
     
                 // Setze die Kameraposition, falls die Welt definiert ist
                 if (this.world) {
-                    this.world.camera_x = -this.x + 100;
+                    this.world.camera_x = -this.x;
                 }
             }
         }, 1000 / 60);
