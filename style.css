@@ -8,16 +8,21 @@ body {
     flex-direction: column;
     align-items: center;
     font-family: assassin-font;
+    margin: 0;
+}
+
+.game-headline {
+    font-size: 80px;
 }
 
 canvas {
     background-color: black;
-    border: 3px solid black;
+    display: block;
 }
 
 .startscreen {
     position: fixed;
-    top: 197px;
+    top: 190px;
     width: 720px;
     height: 480px;
     color: white;
@@ -30,12 +35,11 @@ canvas {
     background-image: url('img/background/PNG/Cartoon_Forest_BG_01/background-startscreen.png');
     background-position: center;
     background-size: 120%;
-    border: 3px solid black;
 }
 
 .loadingscreen {
     position: fixed;
-    top: 197px;
+    top: 190px;
     width: 720px;
     height: 480px; 
     display: none;
@@ -49,7 +53,7 @@ canvas {
 .gameoverscreen {
     display: none; 
     position: fixed; 
-    top: 197px; 
+    top: 190px; 
     width: 720px; 
     height: 480px; 
     background: rgba(0, 0, 0, 0.8); 
@@ -65,7 +69,7 @@ canvas {
 .winningscreen {
     display: none; 
     position: fixed; 
-    top: 197px; 
+    top: 190px; 
     width: 720px; 
     height: 480px; 
     background: rgba(0, 0, 0, 0.8); 
@@ -193,6 +197,7 @@ button:hover i::after {
 
 .tutorial-section {
     display: flex;
+    justify-content: center;
     gap: 80px;
 }
 

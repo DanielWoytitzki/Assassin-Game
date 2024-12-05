@@ -282,6 +282,7 @@ function showTutorial() {
     let content = document.getElementById('keybindsDiv');
 
     content.innerHTML = `
+<div class="tutorial-responsive"> 
     <h2 style="text-align: center; font-size: 40px; margin-bottom: 8px;">How to play</h1>
     <div class="tutorial-section">
         <div class="tutorial-content-box">
@@ -297,6 +298,7 @@ function showTutorial() {
             <p>Use the right Shift key to throw your kunai</p>
         </div>
     </div>
+</div>
     `;
 }
 

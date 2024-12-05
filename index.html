@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mediaquery.css">
     <title>Assassin's Game</title>
     <link rel="icon" type="image/x-icon" href="img/character-rogue/Idle/idle1.png">
     <script src="./models/drawable-object.class.js"></script>
@@ -40,7 +41,7 @@
         Loading...
     </div>
 
-    <h1 style="font-size: 80px;">Assassin's Game</h1>
+    <h1 class="game-headline">Assassin's Game</h1>
 
     <canvas id="canvas" width="720" height="480">
 
@@ -57,7 +58,7 @@
         <button onclick="restartGame();" style="--clr:#22B14C; width: 260px;"><span>Restart Game</span><i></i></button>
     </div>
 
-    <div id="keybindsDiv"></div>
+    <div style="display: flex; justify-content: center; align-items: center;" id="keybindsDiv"></div>
 </body>
 
 </html>

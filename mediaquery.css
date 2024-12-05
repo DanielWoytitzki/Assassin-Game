@@ -1,0 +1,106 @@
+@media (max-height: 1120px) {
+    .tutorial-responsive {
+        position: fixed;
+        top: 192px;
+        width: 720px;
+        height: 480px;
+        background-color: rgb(244, 244, 244);
+    }
+
+    .tutorial-responsive h2 {
+        margin-top: 40px;
+        margin-bottom: 30px !important;
+    }
+
+    .tutorial-content-box img {
+        width: 120px;
+    }
+}
+
+@media (max-height: 675px) {
+    .game-headline {
+        display: none;
+    }
+
+    .startscreen {
+        top: 0;
+    }
+
+    .loadingscreen {
+        top: 0;
+    }
+
+    .gameoverscreen {
+        top: 0;
+    }
+
+    .winningscreen {
+        top: 0;
+    }
+
+    .tutorial-responsive {
+        top: 0;
+    }
+}
+
+@media only screen and (max-width: 720px) {
+    canvas {
+        width: 100% !important;
+    }
+
+    .startscreen {
+        top: 0 !important;
+        width: 100% !important;
+    }
+
+    .loadingscreen {
+        top: 0 !important;
+        width: 100% !important;
+    }
+
+    .gameoverscreen {
+        top: 0 !important;
+        width: 100% !important;
+    }
+
+    .winningscreen {
+        top: 0 !important;
+        width: 100% !important;
+    }
+
+    .tutorial-responsive {
+        top: 0 !important;
+        width: 100% !important;
+    }
+}
+
+@media only screen and (max-height: 480px) {
+    canvas {
+        height: 100vh !important;
+    }
+
+    .startscreen {
+        top: 0 !important;
+        height: 100vh !important;
+    }
+
+    .loadingscreen {
+        top: 0 !important;
+        height: 100vh !important;
+    }
+
+    .gameoverscreen {
+        top: 0 !important;
+        height: 100vh !important;
+    }
+
+    .winningscreen {
+        top: 0 !important;
+        height: 100vh !important;
+    }
+
+    .tutorial-responsive {
+        top: 0 !important;
+        height: 100vh !important;
+    }
+}
