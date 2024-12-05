@@ -1,7 +1,7 @@
 @media (max-height: 1120px) {
     .tutorial-responsive {
         position: fixed;
-        top: 192px;
+        top: 190px;
         width: 720px;
         height: 480px;
         background-color: rgb(244, 244, 244);

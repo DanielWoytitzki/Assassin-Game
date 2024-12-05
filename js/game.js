@@ -282,23 +282,27 @@ function showTutorial() {
     let content = document.getElementById('keybindsDiv');
 
     content.innerHTML = `
-<div class="tutorial-responsive"> 
-    <h2 style="text-align: center; font-size: 40px; margin-bottom: 8px;">How to play</h1>
-    <div class="tutorial-section">
-        <div class="tutorial-content-box">
-            <img src="img/icons/buttons.png">
-            <p>Use the left and right arrow keys to move</p>
+    <div class="tutorial-responsive">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-left: 50px; margin-right: 50px;">
+            <div style="width: 30px; height: 30px;";></div>
+                <h2 style="text-align: center; font-size: 40px;">How to play</h2>
+            <img style="width: 30px; height: 30px; cursor: pointer;" onclick="window.location.reload();" src="img/icons/close-icon.svg">
         </div>
-        <div class="tutorial-content-box">
-            <img src="img/icons/keyboard.png">
-            <p>Use the space bar to jump</p>
-        </div>
-        <div class="tutorial-content-box">
-            <img src="img/icons/shift.png">
-            <p>Use the right Shift key to throw your kunai</p>
+        <div class="tutorial-section">
+            <div class="tutorial-content-box">
+                <img src="img/icons/buttons.png">
+                <p>Use the left and right arrow keys to move</p>
+            </div>
+            <div class="tutorial-content-box">
+                <img src="img/icons/keyboard.png">
+                <p>Use the space bar to jump</p>
+            </div>
+            <div class="tutorial-content-box">
+                <img src="img/icons/shift.png">
+                <p>Use the right Shift key to throw your kunai</p>
+            </div>
         </div>
     </div>
-</div>
     `;
 }
 
