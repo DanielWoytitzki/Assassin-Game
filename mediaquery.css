@@ -41,9 +41,13 @@
     .tutorial-responsive {
         top: 0;
     }
+
+    .ingame-buttons {
+        top: 0;
+    }
 }
 
-@media only screen and (max-width: 720px) {
+@media only screen and (max-width: 950px) {
     canvas {
         width: 100% !important;
     }
@@ -71,6 +75,15 @@
     .tutorial-responsive {
         top: 0 !important;
         width: 100% !important;
+    }
+
+    .ingame-buttons {
+        top: 0 !important;
+        width: 100%;
+    }
+
+    .ingame-buttons-bottom {
+        display: flex;
     }
 }
 
@@ -102,5 +115,14 @@
     .tutorial-responsive {
         top: 0 !important;
         height: 100vh !important;
+    }
+
+    .ingame-buttons {
+        top: 0 !important;
+        height: 100vh !important;
+    }
+
+    .ingame-buttons-bottom {
+        display: flex;
     }
 }

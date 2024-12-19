@@ -18,6 +18,7 @@ body {
 canvas {
     background-color: black;
     display: block;
+    z-index: -2;
 }
 
 .startscreen {
@@ -89,6 +90,41 @@ canvas {
 
 .winningscreen p {
     margin: 0;
+}
+
+.ingame-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    top: 190px;
+    width: 720px; 
+    height: 480px;
+    z-index: -1;
+}
+
+.ingame-buttons img {
+    height: 56px;
+}
+
+.ingame-buttons-top {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 24px;
+    padding-right: 24px;
+    gap: 24px;
+}
+
+.ingame-buttons-bottom {
+    display: none;
+    justify-content: space-between;
+    padding-bottom: 40px;
+    padding-left: 56px;
+    padding-right: 56px;
+}
+
+.ingame-buttons-bottom img {
+    opacity: 0.5;
 }
 
 button {

@@ -34,7 +34,8 @@
         <button onclick="init()" id="startButton" style="--clr:#22B14C"><span>Start Game</span><i></i></button>
         <button onclick="showTutorial()" style="--clr:#22B14C"><span>How to play</span><i></i></button>
         <button onclick="alert('Feature coming soon!')" style="--clr:#22B14C"><span>Settings</span><i></i></button>
-        <button onclick=" window.open('imprint.html', '_blank')" style="--clr:#22B14C"><span>Imprint</span><i></i></button>
+        <button onclick=" window.open('imprint.html', '_blank')"
+            style="--clr:#22B14C"><span>Imprint</span><i></i></button>
     </div>
 
     <div class="loadingscreen" id="loadingScreen">
@@ -42,6 +43,23 @@
     </div>
 
     <h1 class="game-headline">Assassin's Game</h1>
+
+    <div class="ingame-buttons">
+        <div class="ingame-buttons-top">
+            <img src="./img/icons/mute.png" alt="">
+            <img src="./img/icons/fullscreen.png" alt="">
+        </div>
+        <div class="ingame-buttons-bottom">
+            <div style="display: flex; gap: 40px;">
+                <img src="./img/icons/left-arrow.png" alt="">
+                <img src="./img/icons/right-arrow.png" alt="">
+            </div>
+            <div style="display: flex; gap: 40px;">
+                <img src="./img/icons/cross-button.png" alt="">
+                <img src="./img/icons/circle-button.png" alt="">
+            </div>
+        </div>
+    </div>
 
     <canvas id="canvas" width="720" height="480">
 
