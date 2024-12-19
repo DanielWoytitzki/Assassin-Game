@@ -18,7 +18,11 @@ body {
 canvas {
     background-color: black;
     display: block;
-    z-index: -2;
+    z-index: 1;
+}
+
+.canvas-div {
+    z-index: 2;
 }
 
 .startscreen {
@@ -36,6 +40,7 @@ canvas {
     background-image: url('img/background/PNG/Cartoon_Forest_BG_01/background-startscreen.png');
     background-position: center;
     background-size: 120%;
+    z-index: 5;
 }
 
 .loadingscreen {
@@ -49,6 +54,7 @@ canvas {
     background-color: black; 
     color: white; 
     font-size: 48px; 
+    z-index: 4;
 }
 
 .gameoverscreen {
@@ -65,6 +71,7 @@ canvas {
     align-items: center;
     flex-direction: column;
     gap: 24px;
+    z-index: 6;
 }
 
 .winningscreen {
@@ -81,6 +88,7 @@ canvas {
     align-items: center;
     flex-direction: column;
     gap: 24px;
+    z-index: 6;
 }
 
 .winningscreen h1 {
@@ -100,11 +108,15 @@ canvas {
     top: 190px;
     width: 720px; 
     height: 480px;
-    z-index: -1;
+    z-index: 3;
 }
 
 .ingame-buttons img {
     height: 56px;
+}
+
+.ingame-buttons img:hover {
+    cursor: pointer;
 }
 
 .ingame-buttons-top {

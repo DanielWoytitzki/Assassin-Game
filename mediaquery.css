@@ -52,6 +52,10 @@
         width: 100% !important;
     }
 
+   .canvas-div {
+        width: 100% !important;
+    }
+
     .startscreen {
         top: 0 !important;
         width: 100% !important;
@@ -85,10 +89,18 @@
     .ingame-buttons-bottom {
         display: flex;
     }
+
+    .fullscreen-img {
+        display: none;
+    }
 }
 
 @media only screen and (max-height: 480px) {
     canvas {
+        height: 100vh !important;
+    }
+
+    .canvas-div {
         height: 100vh !important;
     }
 
@@ -124,5 +136,9 @@
 
     .ingame-buttons-bottom {
         display: flex;
+    }
+
+    .fullscreen-img {
+        display: none;
     }
 }

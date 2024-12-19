@@ -46,24 +46,28 @@
 
     <div class="ingame-buttons">
         <div class="ingame-buttons-top">
-            <img src="./img/icons/mute.png" alt="">
-            <img src="./img/icons/fullscreen.png" alt="">
+            <img onclick="toggleMuteAllAudios()" src="./img/icons/mute.png" alt="">
+            <img class="fullscreen-img" onclick="fullscreen()" src="./img/icons/fullscreen.png" alt="">
         </div>
         <div class="ingame-buttons-bottom">
             <div style="display: flex; gap: 40px;">
-                <img src="./img/icons/left-arrow.png" alt="">
-                <img src="./img/icons/right-arrow.png" alt="">
+                <img id="btnLeft" src="./img/icons/left-arrow.png" alt="">
+                <img id="btnRight" src="./img/icons/right-arrow.png" alt="">
             </div>
             <div style="display: flex; gap: 40px;">
-                <img src="./img/icons/cross-button.png" alt="">
-                <img src="./img/icons/circle-button.png" alt="">
+                <img id="btnJump" src="./img/icons/cross-button.png" alt="">
+                <img id="btnThrow" src="./img/icons/circle-button.png" alt="">
             </div>
         </div>
     </div>
 
-    <canvas id="canvas" width="720" height="480">
+    <div id="fullscreen" class="canvas-div">
 
-    </canvas>
+        <canvas id="canvas" width="720" height="480">
+
+        </canvas>
+
+    </div>
 
     <div class="gameoverscreen" id="gameOverScreen">
         Game Over

@@ -1,6 +1,16 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+const allAudios = []; // Alle Audio-Instanzen speichern
+let isMuted = false; // Zustand, ob aktuell gemutet
+
+// Prototyp erweitern, um neue Instanzen zu tracken
+const OriginalAudio = Audio; // Original speichern
+window.Audio = function (...args) {
+    const instance = new OriginalAudio(...args);
+    allAudios.push(instance); // Instanz speichern
+    return instance;
+};
 
 function init() {
     startScreen.style.display = 'none';
@@ -377,4 +387,71 @@ function startGame() {
             world.canThrow = true;  // Setze canThrow auf true zurück
         }
     });
+}
+
+setInterval(() => {
+    document.getElementById('btnLeft').addEventListener('touchstart', (event) => {
+        event.preventDefault();
+        keyboard.LEFT = true;
+    });
+    document.getElementById('btnLeft').addEventListener('touchend', (event) => {
+        event.preventDefault();
+        keyboard.LEFT = false;
+    });
+
+    document.getElementById('btnRight').addEventListener('touchstart', (event) => {
+        event.preventDefault();
+        keyboard.RIGHT = true;
+    });
+    document.getElementById('btnRight').addEventListener('touchend', (event) => {
+        event.preventDefault();
+        keyboard.RIGHT = false;
+    });
+
+    document.getElementById('btnJump').addEventListener('touchstart', (event) => {
+        event.preventDefault();
+        keyboard.SPACE = true;
+    });
+    document.getElementById('btnJump').addEventListener('touchend', (event) => {
+        event.preventDefault();
+        keyboard.SPACE = false;
+    });
+
+    document.getElementById('btnThrow').addEventListener('touchstart', (event) => {
+        event.preventDefault();
+        keyboard.RSHIFT = true;
+    });
+    document.getElementById('btnThrow').addEventListener('touchend', (event) => {
+        event.preventDefault();
+        keyboard.RSHIFT = false;
+    });
+}, 50);
+
+function fullscreen() {
+    let fullscreen = document.getElementById('fullscreen');
+    enterFullscreen(fullscreen);
+}
+
+function enterFullscreen(element) {
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    } else if (element.msRequestFullscreen) {      // for IE11 (remove June 15, 2022)
+        element.msRequestFullscreen();
+    } else if (element.webkitRequestFullscreen) {  // iOS Safari
+        element.webkitRequestFullscreen();
+    }
+}
+
+function exitFullscreen() {
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+    }
+}
+
+function toggleMuteAllAudios() {
+    isMuted = !isMuted; // Zustand umkehren
+    allAudios.forEach(audio => audio.muted = isMuted); // Alle (un)mute
+    console.log(isMuted ? "Alle Audios sind gemuted" : "Alle Audios sind unmuted");
 }
