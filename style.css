@@ -268,3 +268,7 @@ button:hover i::after {
     font-size: 24px;
     font-weight: 700;
 }
+
+.tutorial-responsive {
+    z-index: 6;
+}
