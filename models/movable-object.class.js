@@ -5,8 +5,8 @@ class MovableObject extends DrawableObject {
     acceleration = 2.5;
     energy = 100;
     lastHit = 0;
-    hitboxWidth = this.width * 1;  // Hitbox ist 70% der Bildbreite
-    hitboxHeight = this.height * 1; // Hitbox ist 80% der Bildhöhe
+    hitboxWidth = this.width * 1;
+    hitboxHeight = this.height * 1;
 
     applyGravity() {
         setInterval(() => {
@@ -24,17 +24,12 @@ class MovableObject extends DrawableObject {
     isColliding(mo) {
         let offsetX = (this.width - this.hitboxWidth) / 2;
         let offsetY = (this.height - this.hitboxHeight) / 2;
-    
         let moOffsetX = (mo.width - mo.hitboxWidth) / 2;
         let moOffsetY = (mo.height - mo.hitboxHeight) / 2;
-    
-        // Spezielle Offsets nur für den Charakter
         if (this instanceof Character) {
             offsetX += this.hitboxOffsetX;
             offsetY += this.hitboxOffsetY;
         }
-    
-        // Berechne die Kollision unter Berücksichtigung der Hitbox und der Offsets
         return this.x + offsetX + this.hitboxWidth > mo.x + moOffsetX &&
             this.y + offsetY + this.hitboxHeight > mo.y + moOffsetY &&
             this.x + offsetX < mo.x + moOffsetX + mo.hitboxWidth &&
@@ -44,10 +39,10 @@ class MovableObject extends DrawableObject {
     hit() {
         const hurtSound = new Audio('audio/character-damage.mp3');
         const currentTime = new Date().getTime();
-        if (currentTime - this.lastHit > 1000) { // Nur alle 1 Sekunde ein Treffer möglich
-            this.energy -= 20;  // Verringere die Energie des Charakters um 20
+        if (currentTime - this.lastHit > 1000) {
+            this.energy -= 20;
             this.lastHit = currentTime;
-            hurtSound.play();  // Spiele den Schadensound ab, wenn der Charakter getroffen wird
+            hurtSound.play();
         }
         if (this.energy < 0) {
             this.energy = 0;
@@ -57,7 +52,7 @@ class MovableObject extends DrawableObject {
     isHurt() {
         let timepassed = new Date().getTime() - this.lastHit;
         timepassed = timepassed / 1000;
-        return timepassed < 0.5;  // Reduziere die Zeit, in der der Charakter als verletzt gilt, auf 0.5 Sekunden
+        return timepassed < 0.5;
     }
 
     isDead() {

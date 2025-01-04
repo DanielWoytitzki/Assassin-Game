@@ -3,7 +3,6 @@ let world;
 let keyboard = new Keyboard();
 const allAudios = [];
 let isMuted = false;
-
 const OriginalAudio = Audio;
 window.Audio = function (...args) {
     const instance = new OriginalAudio(...args);
@@ -31,10 +30,8 @@ function hideLoadingScreen() {
 
 function showWinningScreen() {
     document.getElementById('winningScreen').style.display = 'flex';
-
     const winSound = new Audio('audio/win-sound.mp3');
     winSound.play();
-
     document.getElementById('scoreDisplay').innerText = `Coins Collected: ${world.collectedCoins} / 27`;
 }
 
@@ -261,13 +258,11 @@ function loadResources() {
             'img/knife/PNG/knife.png',
             'img/knife/PNG/knife-removebg-preview.png'
         ];
-
         imagePaths.forEach((path) => {
             let img = new Image();
             img.src = path;
             imagesToLoad.push(img);
         });
-
         Promise.all(imagesToLoad.map(img => new Promise((resolve) => {
             img.onload = resolve;
             img.onerror = resolve;
@@ -279,7 +274,6 @@ function loadResources() {
 
 function showTutorial() {
     let content = document.getElementById('keybindsDiv');
-
     content.innerHTML = `
     <div class="tutorial-responsive">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-left: 50px; margin-right: 50px;">
@@ -309,63 +303,49 @@ function startGame() {
     if (!level1) {
         return;
     }
-
     canvas = document.getElementById('canvas');
     if (!keyboard) {
         keyboard = new Keyboard();
     }
     world = new World(canvas, keyboard);
-
     world.backgroundMusic.play().catch(error => {
     });
-
     window.addEventListener("keydown", (event) => {
         if (event.keyCode == 39) {
             keyboard.RIGHT = true;
         }
-
         if (event.keyCode == 37) {
             keyboard.LEFT = true;
         }
-
         if (event.keyCode == 38) {
             keyboard.UP = true;
         }
-
         if (event.keyCode == 40) {
             keyboard.DOWN = true;
         }
-
         if (event.keyCode == 32) {
             keyboard.SPACE = true;
         }
-
         if (event.keyCode == 16) {
             keyboard.RSHIFT = true;
         }
     });
-
     window.addEventListener("keyup", (event) => {
         if (event.keyCode == 39) {
             keyboard.RIGHT = false;
         }
-
         if (event.keyCode == 37) {
             keyboard.LEFT = false;
         }
-
         if (event.keyCode == 38) {
             keyboard.UP = false;
         }
-
         if (event.keyCode == 40) {
             keyboard.DOWN = false;
         }
-
         if (event.keyCode == 32) {
             keyboard.SPACE = false;
         }
-
         if (event.keyCode == 16) {
             keyboard.RSHIFT = false;
             world.canThrow = true;
@@ -382,7 +362,6 @@ setInterval(() => {
         event.preventDefault();
         keyboard.LEFT = false;
     });
-
     document.getElementById('btnRight').addEventListener('touchstart', (event) => {
         event.preventDefault();
         keyboard.RIGHT = true;
@@ -391,7 +370,6 @@ setInterval(() => {
         event.preventDefault();
         keyboard.RIGHT = false;
     });
-
     document.getElementById('btnJump').addEventListener('touchstart', (event) => {
         event.preventDefault();
         keyboard.SPACE = true;
@@ -400,7 +378,6 @@ setInterval(() => {
         event.preventDefault();
         keyboard.SPACE = false;
     });
-
     document.getElementById('btnThrow').addEventListener('touchstart', (event) => {
         event.preventDefault();
         keyboard.RSHIFT = true;

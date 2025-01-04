@@ -7,8 +7,7 @@ class Endboss extends MovableObject {
     healthBar;
     isHurt = false;
     isDead = false;
-    isBossMusicPlaying = false; // Neue Variable, um den Zustand der Musik zu verfolgen
-
+    isBossMusicPlaying = false;
     IMAGES_WALKING = [
         'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Communication/0_Warrior_Communication_000.png',
         'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Communication/0_Warrior_Communication_001.png',
@@ -41,7 +40,6 @@ class Endboss extends MovableObject {
         'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Communication/0_Warrior_Communication_028.png',
         'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Communication/0_Warrior_Communication_029.png'
     ];
-
     IMAGES_HURT = [
         'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Hurt/0_Warrior_Hurt_000.png',
         'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Hurt/0_Warrior_Hurt_001.png',
@@ -59,7 +57,6 @@ class Endboss extends MovableObject {
         'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Hurt/0_Warrior_Hurt_013.png',
         'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Hurt/0_Warrior_Hurt_014.png'
     ];
-
     IMAGES_DEATH = [
         'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_000.png',
         'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_001.png',
@@ -92,83 +89,71 @@ class Endboss extends MovableObject {
         'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_028.png',
         'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_029.png'
     ];
-
     hurtSound = new Audio('audio/hurt-sound-endboss.mp3');
-    deathSound = new Audio('audio/enemy-dead.mp3'); // Pfad zum Sterbe-Sound
-
+    deathSound = new Audio('audio/enemy-dead.mp3');
 
     constructor() {
-        super().loadImage(this.IMAGES_WALKING[0]); // Lade das erste Bild des Endbosses
-        this.loadImages(this.IMAGES_WALKING); // Lade alle Bilder für die Geh-Animation
-        this.loadImages(this.IMAGES_HURT); // Lade alle Bilder für die Verletzungs-Animation
-        this.loadImages(this.IMAGES_DEATH); // Lade alle Bilder für die Todes-Animation
-        this.x = 2400; // Setze die Startposition des Endbosses weit rechts
-
-        this.healthBar = new BossHealthBar(this); // Initialisiere die HealthBar für den Endboss
-        this.animate(); // Starte die Animationen des Endbosses
+        super().loadImage(this.IMAGES_WALKING[0]);
+        this.loadImages(this.IMAGES_WALKING);
+        this.loadImages(this.IMAGES_HURT);
+        this.loadImages(this.IMAGES_DEATH);
+        this.x = 2400;
+        this.healthBar = new BossHealthBar(this);
+        this.animate();
     }
 
     throwBomb() {
-        if (this.world) { // Prüfe, ob der Endboss eine Referenz zur Welt hat
-            let bombX = this.x + 100; // Setze die X-Position der Bombe etwas rechts vom Endboss
-            let bombY = this.y + this.height / 10; // Setze die Y-Position der Bombe etwas über dem Boden
-
-            let bomb = new Bomb(bombX, bombY); // Erstelle eine neue Bombe an den angegebenen Koordinaten
+        if (this.world) {
+            let bombX = this.x + 100;
+            let bombY = this.y + this.height / 10;
+            let bomb = new Bomb(bombX, bombY);
             if (bomb) {
-                this.world.bossBombs.push(bomb); // Füge die Bombe zur Sammlung der Bomben in der Welt hinzu
+                this.world.bossBombs.push(bomb);
             }
-
-            // Wurfsound hinzufügen und abspielen
             const throwSound = new Audio('audio/throw-bomb.mp3');
             throwSound.play();
         }
     }
 
     animate() {
-        // Setze ein Intervall, um die Animationen des Endbosses regelmäßig zu aktualisieren
         setInterval(() => {
-            if (this.health > 0 && !this.isDead) { // Prüfe, ob der Endboss noch lebt
-                if (!this.isHurt) { // Wenn der Endboss nicht verletzt ist
-                    this.playAnimation(this.IMAGES_WALKING); // Spiele die Geh-Animation ab
+            if (this.health > 0 && !this.isDead) {
+                if (!this.isHurt) {
+                    this.playAnimation(this.IMAGES_WALKING);
                 }
-
-                // Überprüfe, ob der Charakter nahe genug ist, um Bomben zu werfen
                 if (this.world && Math.abs(this.x - this.world.character.x) < 500 && !this.throwBombInterval) {
-                    this.startThrowingBombs(); // Starte das Werfen von Bomben, wenn der Charakter nah genug ist
+                    this.startThrowingBombs();
                 }
-
-                // Überprüfe, ob der Charakter nahe genug ist, um die Boss-Musik zu starten
                 if (this.world && Math.abs(this.x - this.world.character.x) < 500) {
                     if (!this.isBossMusicPlaying) {
                         this.startBossMusic();
                         this.isBossMusicPlaying = true;
                     }
-                    this.world.bossReached = true; // Setze bossReached auf true, wenn der Boss erreicht wurde
+                    this.world.bossReached = true;
                 }
             }
-        }, 1000 / 20); // Aktualisiere die Animationen alle 50 ms (20 FPS)
+        }, 1000 / 20);
     }
 
     startBossMusic() {
-        this.world.backgroundMusic.pause(); // Hintergrundmusik pausieren
-        this.world.bossMusic.currentTime = 0; // Boss-Musik auf den Anfang setzen
-        this.world.bossMusic.play(); // Boss-Musik abspielen
+        this.world.backgroundMusic.pause();
+        this.world.bossMusic.currentTime = 0;
+        this.world.bossMusic.play();
     }
 
     startThrowingBombs() {
-        // Verhindere, dass der Timer mehrfach gesetzt wird
         if (!this.throwBombInterval) {
             this.throwBombInterval = setInterval(() => {
-                if (this.health > 0 && !this.isDead) { // Prüfe, ob der Endboss noch lebt
-                    this.throwBomb(); // Werfe eine Bombe
+                if (this.health > 0 && !this.isDead) {
+                    this.throwBomb();
                 }
-            }, 2000); // Wirft alle 5 Sekunden eine Bombe
+            }, 2000);
         }
     }
 
     draw(ctx) {
-        super.draw(ctx); // Zeichnet den Boss selbst
-        this.healthBar.draw(ctx); // Zeichnet die HealthBar über dem Boss
+        super.draw(ctx);
+        this.healthBar.draw(ctx);
     }
 
     takeDamage() {
@@ -182,20 +167,17 @@ class Endboss extends MovableObject {
     }
 
     playHurtAnimation() {
-        this.isHurt = true;  // Setze Zustand auf "verletzt"
+        this.isHurt = true;
         this.hurtSound.play();
         this.playAnimation(this.IMAGES_HURT);
-
-        // Nach kurzer Zeit zurück zur normalen Animation wechseln
         setTimeout(() => {
-            this.isHurt = false;  // Zustand wieder auf normal setzen
-        }, 1000); // 1000 ms für die Treffer-Animation
+            this.isHurt = false;
+        }, 1000);
     }
 
     playDeathAnimation() {
-        this.isDead = true; // Setze Zustand auf "sterbend"
-        this.deathSound.play();  // Spiele den Sterbe-Sound ab
-
+        this.isDead = true;
+        this.deathSound.play();
         let animationIndex = 0;
         const deathAnimationInterval = setInterval(() => {
             if (animationIndex < this.IMAGES_DEATH.length) {
@@ -203,11 +185,10 @@ class Endboss extends MovableObject {
                 animationIndex++;
             } else {
                 clearInterval(deathAnimationInterval);
-                // Nach der Animation können wir den Endboss als "tot" markieren oder entfernen
                 this.dead = true;
                 this.world.bossMusic.pause();
                 showWinningScreen();
             }
-        }, 1000 / 20); // Zeitintervall zwischen den Bildern der Sterbeanimation
+        }, 1000 / 20);
     }
 }

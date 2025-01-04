@@ -1,9 +1,7 @@
 class Character extends MovableObject {
-
     speed = 3;
     y = -200;
     idleTimer = 0;
-
     IMAGES_IDLE = [
         'img/character-rogue/Idle/idle1.png',
         'img/character-rogue/Idle/idle2.png',

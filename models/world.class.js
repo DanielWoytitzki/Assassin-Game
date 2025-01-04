@@ -7,38 +7,28 @@ class World {
     camera_x = 0;
     statusBar = new StatusBar();
     throwableObjects = [];
-    collectables = [];  // Sammlung aller einsammelbaren Objekte
+    collectables = [];
     canThrow = true;
-    collectedCoins = 0;  // Anfangswert für Münzen
-    availableKnives = 0;  // Anfangswert für Messer
+    collectedCoins = 0;
+    availableKnives = 0;
     backgroundMusic = new Audio('audio/background.mp3');
     bossMusic = new Audio('audio/endboss-music.mp3');
     bossBombs = [];
-    bossReached = false; // Neue Variable, um zu verfolgen, ob der Boss erreicht wurde
-
+    bossReached = false;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
-
-        // Münz-Icon laden
         this.coinIcon = new Image();
-        this.coinIcon.src = 'img/8_coin/coin_1.png';  // Pfad zum Münz-Icon-Bild
-
-        // Messer-Icon laden
+        this.coinIcon.src = 'img/8_coin/coin_1.png';
         this.knifeIcon = new Image();
-        this.knifeIcon.src = 'img/knife/PNG/knife.png';  // Pfad zum Messer-Icon-Bild
-
-        // Schleifen-Eigenschaften für Musik setzen
+        this.knifeIcon.src = 'img/knife/PNG/knife.png';
         this.backgroundMusic.loop = true;
         this.backgroundMusic.volume = 0.5;
-
         this.bossMusic.loop = true;
         this.bossMusic.volume = 0.7;
-
-        this.backgroundMusic.play();  // Musik abspielen
-
+        this.backgroundMusic.play();
         this.draw();
         this.setWorld();
         this.run();
@@ -56,7 +46,7 @@ class World {
     run() {
         this.gameInterval = setInterval(() => {
             this.checkCollisions();
-            this.checkCollectableCollection();  // Prüfe, ob einsammelbare Objekte eingesammelt werden
+            this.checkCollectableCollection();
             this.checkThrowObjects();
             this.checkGameOver();
             this.checkBombCollisions();
@@ -66,7 +56,7 @@ class World {
     checkGameOver() {
         if (this.character.isDead()) {
             this.showGameOverScreen();
-            this.stopGame();  // Pausiere das Spiel
+            this.stopGame();
         }
     }
 
@@ -84,49 +74,37 @@ class World {
     checkCollectableCollection() {
         this.level.collectables.forEach((collectable, collectableIndex) => {
             if (this.character.isColliding(collectable)) {
-
-                // Spiele den Sound ab, wenn das Collectable ein Sound-Feature hat
                 if (collectable.type === 'coin') {
-                    this.collectedCoins++;  // Münzenanzahl erhöhen
+                    this.collectedCoins++;
                     collectable.playCollectSound();
                 }
-
                 if (collectable.type === 'knife') {
-                    this.availableKnives++;  // Messeranzahl erhöhen
+                    this.availableKnives++;
                     collectable.playCollectSound();
                 }
-
-                this.level.collectables.splice(collectableIndex, 1);  // Entferne das Objekt, nachdem es eingesammelt wurde
+                this.level.collectables.splice(collectableIndex, 1);
             }
         });
     }
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
-
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.statusBar);
         this.ctx.translate(this.camera_x, 0);
-
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.throwableObjects);
-        this.addObjectsToMap(this.level.collectables);  // Sammelbare Objekte aus dem Level hinzufügen
-
-        // Bomben updaten und zeichnen
+        this.addObjectsToMap(this.level.collectables);
         this.bossBombs.forEach(bomb => {
-            bomb.update(); // Bewegt die Bombe
-            this.addToMap(bomb); // Zeichnet die Bombe auf die Karte
+            bomb.update();
+            this.addToMap(bomb);
         });
-
         this.ctx.translate(-this.camera_x, 0);
-
         this.drawCollectableCount();
-
         let self = this;
         requestAnimationFrame(function () {
             self.draw();
@@ -134,56 +112,37 @@ class World {
     }
 
     drawCollectableCount() {
-        // Prüfen, ob die Bilder geladen sind, bevor wir sie zeichnen
         if (this.coinIcon.complete && this.knifeIcon.complete) {
-            // Münz-Icon zeichnen
-            this.ctx.drawImage(this.coinIcon, -17, 20, 120, 120);  // Münz-Icon (X: 20, Y: 50, Größe: 40x40)
-
-            // Messer-Icon zeichnen
-            this.ctx.drawImage(this.knifeIcon, 20, 105, 40, 40);  // Messer-Icon (X: 20, Y: 100, Größe: 40x40)
-
-            // Anzahl der Münzen neben dem Münz-Icon zeichnen
+            this.ctx.drawImage(this.coinIcon, -17, 20, 120, 120);
+            this.ctx.drawImage(this.knifeIcon, 20, 105, 40, 40);
             this.ctx.font = "32px Arial";
             this.ctx.fillStyle = "white";
-            this.ctx.fillText(this.collectedCoins, 70, 90);  // Zahl für Münzen (X: 70, Y: 80)
-
-            // Anzahl der Messer neben dem Messer-Icon zeichnen
-            this.ctx.fillText(this.availableKnives, 70, 135);  // Zahl für Messer (X: 70, Y: 130)
+            this.ctx.fillText(this.collectedCoins, 70, 90);
+            this.ctx.fillText(this.availableKnives, 70, 135);
         }
     }
 
     checkThrowObjects() {
-        const throwSound = new Audio('audio/knife-throw.mp3');  // Erstelle das Audio-Objekt für den Messersound
-
+        const throwSound = new Audio('audio/knife-throw.mp3');
         if (this.keyboard.RSHIFT && this.canThrow && this.availableKnives > 0) {
-
-            // Messer werfen
             let knife = new ThrowableObject(this.character.x + 100, this.character.y + 100);
             this.throwableObjects.push(knife);
-
-            // Sound abspielen
             throwSound.play();
-
-            // Messeranzahl und CanThrow aktualisieren
-            this.canThrow = false;  // Verhindert kontinuierliches Werfen
-            this.availableKnives--;  // Zähle ein Messer vom Count herunter
+            this.canThrow = false;
+            this.availableKnives--;
         }
-
         if (!this.keyboard.RSHIFT) {
-            this.canThrow = true;  // Setze die Wurf-Freigabe zurück, wenn die Taste losgelassen wird
+            this.canThrow = true;
         }
     }
 
     checkCollisions() {
-        // Prüfe Kollisionen zwischen dem Charakter und Gegnern
         this.level.enemies.forEach((enemy, enemyIndex) => {
             if (this.character.isColliding(enemy)) {
-                this.character.hit();  // Der Charakter nimmt Schaden
+                this.character.hit();
                 this.statusBar.setPercentage(this.character.energy);
             }
         });
-
-        // Prüfe Kollisionen zwischen geworfenen Objekten (Messer) und Gegnern
         this.throwableObjects.forEach((throwableObject, throwableIndex) => {
             for (let enemyIndex = 0; enemyIndex < this.level.enemies.length; enemyIndex++) {
                 let enemy = this.level.enemies[enemyIndex];
@@ -193,58 +152,48 @@ class World {
                     } else {
                         this.handleEnemyDeath(enemy, enemyIndex);
                     }
-                    this.throwableObjects.splice(throwableIndex, 1); // Messer verschwindet nach dem Treffer
+                    this.throwableObjects.splice(throwableIndex, 1);
                     return;
                 }
             }
         });
-
-        // Prüfe Kollisionen zwischen der Bombe und dem Charakter
         this.bossBombs.forEach((bomb, index) => {
             if (this.character.isColliding(bomb)) {
-                this.character.hit(); // Der Charakter nimmt Schaden
-                this.bossBombs.splice(index, 1); // Bombe entfernen
-                // Treffer-Sound hinzufügen
-                const hitSound = new Audio('audio/bomb-explosion.mp3'); // Pfad zu deinem Treffer-Sound
-                hitSound.volume = 0.5;  // Optional: Passe die Lautstärke an
-                hitSound.play();  // Spiele den Treffer-Sound ab
+                this.character.hit();
+                this.bossBombs.splice(index, 1);
+                const hitSound = new Audio('audio/bomb-explosion.mp3');
+                hitSound.volume = 0.5;
+                hitSound.play();
             }
         });
     }
 
     checkBombCollisions() {
         this.bossBombs.forEach((bomb) => {
-            bomb.checkCollisionWithCharacter(this.character); // Prüfe Kollision der Bombe mit dem Charakter
+            bomb.checkCollisionWithCharacter(this.character);
         });
     }
 
-    // Diese Methode gehört ebenfalls zur World-Klasse
     handleEnemyDeath(enemy, enemyIndex) {
         if (enemy.isDead) {
-            return; // Wenn der Gegner schon tot ist, tu nichts.
+            return;
         }
-
-        enemy.isDead = true;  // Markiere den Gegner als "tot", um doppelte Treffer zu vermeiden.
-        const deathSound = new Audio('audio/enemy-dead.mp3');  // Erstelle das Audio-Objekt für den Todessound
-        deathSound.play();  // Spiele den Todessound ab
-
-        enemy.playDeathAnimation();  // Spiele die Sterbeanimation des Gegners ab
-
-        // Entferne den Gegner nach Ablauf der Sterbeanimation
+        enemy.isDead = true;
+        const deathSound = new Audio('audio/enemy-dead.mp3');
+        deathSound.play();
+        enemy.playDeathAnimation();
         setTimeout(() => {
             let index = this.level.enemies.indexOf(enemy);
             if (index > -1) {
-                this.level.enemies.splice(index, 1);  // Entferne den Gegner aus dem Array
+                this.level.enemies.splice(index, 1);
             }
-        }, 2000);  // Animation dauert 2 Sekunden (anpassbar)
+        }, 2000);
     }
 
     handleBossDeath() {
-        const deathSound = new Audio('audio/boss-dead.mp3');  // Optional: Erstelle das Audio-Objekt für den Todessound
-
-        deathSound.play();  // Spiele den Todessound ab
-
-        this.level.endboss.playDeathAnimation();  // Spiele die Sterbeanimation des Endbosses ab
+        const deathSound = new Audio('audio/boss-dead.mp3');
+        deathSound.play();
+        this.level.endboss.playDeathAnimation();
         setTimeout(() => {
             this.level.endboss = null;
         }, 3000);
@@ -260,9 +209,7 @@ class World {
         if (mo.otherDirection) {
             this.flipImage(mo);
         }
-
         mo.draw(this.ctx);
-
         if (mo.otherDirection) {
             this.flipImageBack(mo);
         }

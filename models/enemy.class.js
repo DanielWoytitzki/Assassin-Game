@@ -67,7 +67,7 @@ class Enemy extends MovableObject {
         'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_1/Died/0_Warrior_Died_029.png'
     ];
     isDead = false;
-    
+
     constructor() {
         super();
         this.hitboxWidth = this.width * 0.3;
@@ -75,16 +75,14 @@ class Enemy extends MovableObject {
         this.loadImage('img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_1/Walk/0_Warrior_Walk_000.png');
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_DEAD);
-
         this.x = 400 + Math.random() * 2000;
         this.speed = 0.5 + Math.random() * 1.5;
-
         this.animate();
     }
 
     animate() {
         setInterval(() => {
-            if (!this.isDead) {  // Laufen nur, wenn der Gegner nicht tot ist
+            if (!this.isDead) {
                 this.moveLeft();
                 this.playAnimation(this.IMAGES_WALKING);
             }
@@ -92,23 +90,22 @@ class Enemy extends MovableObject {
     }
 
     playDeathAnimation() {
-        this.isDead = true;  // Setze den Gegner auf "tot"
+        this.isDead = true;
         let animationIndex = 0;
         let deathAnimationInterval = setInterval(() => {
             this.img = this.imageCache[this.IMAGES_DEAD[animationIndex]];
             animationIndex++;
-
             if (animationIndex >= this.IMAGES_DEAD.length) {
                 clearInterval(deathAnimationInterval);
-                this.removeEnemy();  // Entferne den Gegner nach der Sterbeanimation
+                this.removeEnemy();
             }
-        }, 1000 / 20);  // 20 FPS für die Sterbeanimation
+        }, 1000 / 20);
     }
 
     removeEnemy() {
         let enemyIndex = world.level.enemies.indexOf(this);
         if (enemyIndex !== -1) {
-            world.level.enemies.splice(enemyIndex, 1);  // Entferne den Gegner
+            world.level.enemies.splice(enemyIndex, 1);
         }
     }
 }
