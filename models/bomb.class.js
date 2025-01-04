@@ -20,7 +20,6 @@ class Bomb extends MovableObject {
     }
 
     checkCollisionWithCharacter(character) {
-        // Überprüfe, ob die Bombe mit dem Charakter kollidiert
         if (
             this.x < character.x + character.hitboxWidth &&
             this.x + this.hitboxWidth > character.x &&
@@ -28,7 +27,7 @@ class Bomb extends MovableObject {
             this.y + this.hitboxHeight > character.y
         ) {
             character.hit(); // Der Charakter verliert Leben, wenn er getroffen wird
-            console.log('Updating status bar to:', character.energy); character.world.statusBar.setPercentage(character.energy); // Aktualisiere die Statusbar entsprechend der Energie des Charakters
+            character.world.statusBar.setPercentage(character.energy); // Aktualisiere die Statusbar entsprechend der Energie des Charakters
         }
     }
 }

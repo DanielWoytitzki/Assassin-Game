@@ -110,23 +110,17 @@ class Endboss extends MovableObject {
 
     throwBomb() {
         if (this.world) { // Prüfe, ob der Endboss eine Referenz zur Welt hat
-            console.log('Endboss versucht, eine Bombe zu werfen!');
             let bombX = this.x + 100; // Setze die X-Position der Bombe etwas rechts vom Endboss
             let bombY = this.y + this.height / 10; // Setze die Y-Position der Bombe etwas über dem Boden
 
             let bomb = new Bomb(bombX, bombY); // Erstelle eine neue Bombe an den angegebenen Koordinaten
             if (bomb) {
                 this.world.bossBombs.push(bomb); // Füge die Bombe zur Sammlung der Bomben in der Welt hinzu
-                console.log('Bombe erfolgreich hinzugefügt:', bomb);
-            } else {
-                console.log('Fehler: Bombe konnte nicht erstellt werden.');
             }
 
             // Wurfsound hinzufügen und abspielen
             const throwSound = new Audio('audio/throw-bomb.mp3');
             throwSound.play();
-        } else {
-            console.log('Fehler: Endboss hat keine Referenz zur Welt.');
         }
     }
 
@@ -180,7 +174,6 @@ class Endboss extends MovableObject {
     takeDamage() {
         if (this.health > 0 && !this.isDead) {
             this.health--;
-            console.log(`Endboss getroffen! Lebenspunkte: ${this.health}`);
             this.playHurtAnimation();
         }
         if (this.health <= 0 && !this.isDead) {
@@ -200,7 +193,6 @@ class Endboss extends MovableObject {
     }
 
     playDeathAnimation() {
-        console.log("Endboss ist besiegt!");
         this.isDead = true; // Setze Zustand auf "sterbend"
         this.deathSound.play();  // Spiele den Sterbe-Sound ab
 
@@ -213,7 +205,6 @@ class Endboss extends MovableObject {
                 clearInterval(deathAnimationInterval);
                 // Nach der Animation können wir den Endboss als "tot" markieren oder entfernen
                 this.dead = true;
-                console.log("Endboss ist vollständig besiegt!");
                 this.world.bossMusic.pause();
                 showWinningScreen();
             }

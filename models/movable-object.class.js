@@ -45,9 +45,7 @@ class MovableObject extends DrawableObject {
         const hurtSound = new Audio('audio/character-damage.mp3');
         const currentTime = new Date().getTime();
         if (currentTime - this.lastHit > 1000) { // Nur alle 1 Sekunde ein Treffer möglich
-            console.log('Character hit! Energy before:', this.energy);
             this.energy -= 20;  // Verringere die Energie des Charakters um 20
-            console.log('Character last hit timestamp updated');
             this.lastHit = currentTime;
             hurtSound.play();  // Spiele den Schadensound ab, wenn der Charakter getroffen wird
         }

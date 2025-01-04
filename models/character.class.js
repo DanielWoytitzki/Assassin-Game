@@ -63,13 +63,12 @@ class Character extends MovableObject {
 
     constructor() {
         super();
-        this.hitboxWidth = this.width * 0.3;  // Setze die Hitbox für den Charakter
-        this.hitboxHeight = this.height * 0.5;  // Setze die Hitbox für den Charakter
-    
-        // Spezifischer Offset für den Charakter
-        this.hitboxOffsetX = -30;  // Beispielwert, der den X-Offset korrigiert
-        this.hitboxOffsetY = 25;  // Beispielwert, der den Y-Offset korrigiert
-    
+        this.hitboxWidth = this.width * 0.3;
+        this.hitboxHeight = this.height * 0.5;
+
+        this.hitboxOffsetX = -30;
+        this.hitboxOffsetY = 25;
+
         this.loadImage('img/character-rogue/rogue.png');
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_JUMPING);
@@ -81,56 +80,72 @@ class Character extends MovableObject {
     }
 
     animate() {
-        setInterval(() => {
-            this.walking_sound.pause();
-            if (this.world && this.world.keyboard) {
-                if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-                    this.moveRight();
-                    this.otherDirection = false;
-                    this.walking_sound.play();
-                    this.idleTimer = 0;
-                }
-    
-                if (this.world.keyboard.LEFT && this.x > 0) {
-                    // Überprüfe, ob der Charakter den Boss erreicht hat und begrenze die Bewegung nach links
-                    if (!this.world.bossReached || this.x > 2000) {
-                        this.moveLeft();
-                        this.otherDirection = true;
-                        this.walking_sound.play();
-                        this.idleTimer = 0;
-                    }
-                }
-    
-                if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-                    this.jump();
-                    this.idleTimer = 0;
-                }
-    
-                // Setze die Kameraposition, falls die Welt definiert ist
-                if (this.world) {
-                    this.world.camera_x = -this.x;
-                }
-            }
-        }, 1000 / 60);
-    
-        setInterval(() => {
-            if (this.isDead()) {
-                this.playAnimation(this.IMAGES_DEAD);
-            } else if (this.isHurt()) {
-                this.playAnimation(this.IMAGES_HURT);
+        setInterval(() => this.moveCharacter(), 1000 / 60);
+        setInterval(() => this.playAnimationsCharacter(), 1000 / 10);
+    }
+
+    moveCharacter() {
+        this.walking_sound.pause();
+        if (this.world && this.world.keyboard) {
+            if (this.canMoveRight())
+                this.moveRight();
+            if (this.canMoveLeft())
+                this.moveLeft();
+            if (this.canJump()) {
+                this.jump();
                 this.idleTimer = 0;
-            } else if (this.isAboveGround()) {
-                this.playAnimation(this.IMAGES_JUMPING);
-                this.idleTimer = 0;
-            } else if (this.world && (this.world.keyboard.RIGHT || this.world.keyboard.LEFT)) {
-                this.playAnimation(this.IMAGES_WALKING);
-                this.idleTimer = 0;  // Bewegung aktiv, also Idle-Timer zurücksetzen
-            } else {
-                this.idleTimer += 100;  // Timer hochzählen, wenn keine Bewegung aktiv ist (100ms Schritt)
-                if (this.idleTimer > 2000) {  // Idle-Animation erst nach 2 Sekunden abspielen
-                    this.playAnimation(this.IMAGES_IDLE);
-                }
             }
-        }, 1000 / 10);
+            if (this.world) {
+                this.world.camera_x = -this.x;
+            }
+        }
+    }
+
+    canMoveRight() {
+        return this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x;
+    }
+
+    moveRight() {
+        super.moveRight();
+        this.otherDirection = false;
+        this.walking_sound.play();
+        this.idleTimer = 0;
+    }
+
+    canMoveLeft() {
+        return this.world.keyboard.LEFT && this.x > 0;
+    }
+
+    moveLeft() {
+        if (!this.world.bossReached || this.x > 2000) {
+            super.moveLeft();
+            this.otherDirection = true;
+            this.walking_sound.play();
+            this.idleTimer = 0;
+        }
+    }
+
+    canJump() {
+        return this.world.keyboard.SPACE && !this.isAboveGround();
+    }
+
+    playAnimationsCharacter() {
+        if (this.isDead()) {
+            this.playAnimation(this.IMAGES_DEAD);
+        } else if (this.isHurt()) {
+            this.playAnimation(this.IMAGES_HURT);
+            this.idleTimer = 0;
+        } else if (this.isAboveGround()) {
+            this.playAnimation(this.IMAGES_JUMPING);
+            this.idleTimer = 0;
+        } else if (this.world && (this.world.keyboard.RIGHT || this.world.keyboard.LEFT)) {
+            this.playAnimation(this.IMAGES_WALKING);
+            this.idleTimer = 0;
+        } else {
+            this.idleTimer += 100;
+            if (this.idleTimer > 2000) {
+                this.playAnimation(this.IMAGES_IDLE);
+            }
+        }
     }
 }    

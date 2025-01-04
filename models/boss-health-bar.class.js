@@ -11,12 +11,10 @@ class BossHealthBar {
         // Hintergrund des Balkens (verlorene HP)
         ctx.fillStyle = 'darkred';
         ctx.fillRect(this.boss.x + this.offsetX, this.boss.y + this.offsetY, this.width, this.height);
-
         // Vordere HP-Anzeige (verbleibende HP)
         ctx.fillStyle = 'limegreen';
         let currentWidth = this.width * (this.boss.health / this.boss.maxHealth);
         ctx.fillRect(this.boss.x + this.offsetX, this.boss.y + this.offsetY, currentWidth, this.height);
-
         // Rahmen um die Healthbar zeichnen
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 2;

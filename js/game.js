@@ -1,25 +1,20 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
-const allAudios = []; // Alle Audio-Instanzen speichern
-let isMuted = false; // Zustand, ob aktuell gemutet
+const allAudios = [];
+let isMuted = false;
 
-// Prototyp erweitern, um neue Instanzen zu tracken
-const OriginalAudio = Audio; // Original speichern
+const OriginalAudio = Audio;
 window.Audio = function (...args) {
     const instance = new OriginalAudio(...args);
-    allAudios.push(instance); // Instanz speichern
+    allAudios.push(instance);
     return instance;
 };
 
 function init() {
     startScreen.style.display = 'none';
-    // Zeige den Ladebildschirm an und lade die Ressourcen
     showLoadingScreen();
-
-    // Lade alle Ressourcen
     loadResources().then(() => {
-        // Verstecke den Ladebildschirm und zeige den Startbildschirm
         hideLoadingScreen();
         initLevel();
         startGame();
@@ -35,19 +30,16 @@ function hideLoadingScreen() {
 }
 
 function showWinningScreen() {
-    // Zeige den Winning Screen an
     document.getElementById('winningScreen').style.display = 'flex';
 
-    // Spiele den Sound ab
     const winSound = new Audio('audio/win-sound.mp3');
     winSound.play();
 
-    // Aktualisiere die Anzeige der gesammelten Münzen
     document.getElementById('scoreDisplay').innerText = `Coins Collected: ${world.collectedCoins} / 27`;
 }
 
 function restartGame() {
-    window.location.reload(); // Lade das Spiel neu, wenn der Spieler "Restart Game" auswählt
+    window.location.reload();
 }
 
 function loadResources() {
@@ -270,19 +262,16 @@ function loadResources() {
             'img/knife/PNG/knife-removebg-preview.png'
         ];
 
-        // Lade alle Bilder
         imagePaths.forEach((path) => {
             let img = new Image();
             img.src = path;
             imagesToLoad.push(img);
         });
 
-        // Warte, bis alle Bilder geladen sind
         Promise.all(imagesToLoad.map(img => new Promise((resolve) => {
             img.onload = resolve;
             img.onerror = resolve;
         }))).then(() => {
-            console.log('Alle Bilder geladen');
             resolve();
         });
     });
@@ -318,22 +307,17 @@ function showTutorial() {
 
 function startGame() {
     if (!level1) {
-        console.error("Das Level ist nicht korrekt initialisiert!");
         return;
     }
 
     canvas = document.getElementById('canvas');
     if (!keyboard) {
-        keyboard = new Keyboard(); // Falls das Keyboard noch nicht initialisiert ist
+        keyboard = new Keyboard();
     }
-    world = new World(canvas, keyboard); // Die World-Instanz initialisieren
+    world = new World(canvas, keyboard);
 
-    // Starte die Hintergrundmusik
     world.backgroundMusic.play().catch(error => {
-        console.log("Fehler beim Start der Hintergrundmusik: " + error);
     });
-
-    console.log('My Character is', world.character);
 
     window.addEventListener("keydown", (event) => {
         if (event.keyCode == 39) {
@@ -356,8 +340,8 @@ function startGame() {
             keyboard.SPACE = true;
         }
 
-        if (event.keyCode == 16) {  // Wenn Shift gedrückt wird
-            keyboard.RSHIFT = true;  // Setze RSHIFT auf true
+        if (event.keyCode == 16) {
+            keyboard.RSHIFT = true;
         }
     });
 
@@ -384,7 +368,7 @@ function startGame() {
 
         if (event.keyCode == 16) {
             keyboard.RSHIFT = false;
-            world.canThrow = true;  // Setze canThrow auf true zurück
+            world.canThrow = true;
         }
     });
 }
@@ -435,9 +419,8 @@ function fullscreen() {
 function enterFullscreen(element) {
     if (element.requestFullscreen) {
         element.requestFullscreen();
-    } else if (element.msRequestFullscreen) {      // for IE11 (remove June 15, 2022)
-        element.msRequestFullscreen();
-    } else if (element.webkitRequestFullscreen) {  // iOS Safari
+    } else if (element.msRequestFullscreen) {
+    } else if (element.webkitRequestFullscreen) {
         element.webkitRequestFullscreen();
     }
 }
@@ -451,7 +434,6 @@ function exitFullscreen() {
 }
 
 function toggleMuteAllAudios() {
-    isMuted = !isMuted; // Zustand umkehren
-    allAudios.forEach(audio => audio.muted = isMuted); // Alle (un)mute
-    console.log(isMuted ? "Alle Audios sind gemuted" : "Alle Audios sind unmuted");
+    isMuted = !isMuted;
+    allAudios.forEach(audio => audio.muted = isMuted);
 }

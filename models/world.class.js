@@ -82,10 +82,8 @@ class World {
     }
 
     checkCollectableCollection() {
-        console.log("checkCollectableCollection wird aufgerufen");  // Debug-Ausgabe
         this.level.collectables.forEach((collectable, collectableIndex) => {
             if (this.character.isColliding(collectable)) {
-                console.log(`${collectable.type} eingesammelt!`);
 
                 // Spiele den Sound ab, wenn das Collectable ein Sound-Feature hat
                 if (collectable.type === 'coin') {
@@ -158,7 +156,6 @@ class World {
         const throwSound = new Audio('audio/knife-throw.mp3');  // Erstelle das Audio-Objekt für den Messersound
 
         if (this.keyboard.RSHIFT && this.canThrow && this.availableKnives > 0) {
-            console.log("Bedingung erfüllt: Messer kann geworfen werden");
 
             // Messer werfen
             let knife = new ThrowableObject(this.character.x + 100, this.character.y + 100);
@@ -170,7 +167,6 @@ class World {
             // Messeranzahl und CanThrow aktualisieren
             this.canThrow = false;  // Verhindert kontinuierliches Werfen
             this.availableKnives--;  // Zähle ein Messer vom Count herunter
-            console.log(`Messer geworfen! Verfügbare Messer nach dem Wurf: ${this.availableKnives}`);
         }
 
         if (!this.keyboard.RSHIFT) {
@@ -193,7 +189,6 @@ class World {
                 let enemy = this.level.enemies[enemyIndex];
                 if (throwableObject.isColliding(enemy)) {
                     if (enemy instanceof Endboss) {
-                        console.log('Endboss getroffen!');
                         enemy.takeDamage();
                     } else {
                         this.handleEnemyDeath(enemy, enemyIndex);
@@ -207,7 +202,6 @@ class World {
         // Prüfe Kollisionen zwischen der Bombe und dem Charakter
         this.bossBombs.forEach((bomb, index) => {
             if (this.character.isColliding(bomb)) {
-                console.log('Charakter von Bombe getroffen!');
                 this.character.hit(); // Der Charakter nimmt Schaden
                 this.bossBombs.splice(index, 1); // Bombe entfernen
                 // Treffer-Sound hinzufügen
@@ -241,7 +235,6 @@ class World {
             let index = this.level.enemies.indexOf(enemy);
             if (index > -1) {
                 this.level.enemies.splice(index, 1);  // Entferne den Gegner aus dem Array
-                console.log('Gegner aus Array entfernt');
             }
         }, 2000);  // Animation dauert 2 Sekunden (anpassbar)
     }
@@ -253,11 +246,8 @@ class World {
 
         this.level.endboss.playDeathAnimation();  // Spiele die Sterbeanimation des Endbosses ab
         setTimeout(() => {
-            // Entferne den Endboss nach der Animation
-            this.level.endboss = null;  // Setze den Endboss auf null, um ihn zu "entfernen"
-            console.log("Endboss entfernt, Level abgeschlossen!");
-            // Hier könntest du auch den Level-Abschluss behandeln (z.B. Übergang zu einer End-Szene).
-        }, 3000);  // Animation dauert 3 Sekunden (anpassbar)
+            this.level.endboss = null;
+        }, 3000);
     }
 
     addObjectsToMap(objects) {
@@ -272,7 +262,6 @@ class World {
         }
 
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
 
         if (mo.otherDirection) {
             this.flipImageBack(mo);
