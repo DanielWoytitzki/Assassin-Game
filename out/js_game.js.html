@@ -1,4 +1,32 @@
-let canvas;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: js/game.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: js/game.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>let canvas;
 let world;
 let keyboard = new Keyboard();
 const allAudios = [];
@@ -60,7 +88,7 @@ function restartGame() {
 /**
  * Loads all required images for the game by creating `Image` objects
  * and waiting for their `onload` or `onerror` events before resolving.
- * @returns {Promise<void>} A promise that resolves once all images have finished loading.
+ * @returns {Promise&lt;void>} A promise that resolves once all images have finished loading.
  */
 function loadResources() {
     return new Promise((resolve) => {
@@ -302,27 +330,27 @@ function loadResources() {
 function showTutorial() {
     let content = document.getElementById('keybindsDiv');
     content.innerHTML = `
-    <div class="tutorial-responsive">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-left: 50px; margin-right: 50px;">
-            <div style="width: 30px; height: 30px;";></div>
-                <h2 style="text-align: center; font-size: 40px;">How to play</h2>
-            <img style="width: 30px; height: 30px; cursor: pointer;" onclick="window.location.reload();" src="img/icons/close-icon.svg">
-        </div>
-        <div class="tutorial-section">
-            <div class="tutorial-content-box">
-                <img src="img/icons/buttons.png">
-                <p>Use the left and right arrow keys to move</p>
-            </div>
-            <div class="tutorial-content-box">
-                <img src="img/icons/keyboard.png">
-                <p>Use the space bar to jump</p>
-            </div>
-            <div class="tutorial-content-box">
-                <img src="img/icons/shift.png">
-                <p>Use the right Shift key to throw your kunai</p>
-            </div>
-        </div>
-    </div>
+    &lt;div class="tutorial-responsive">
+        &lt;div style="display: flex; justify-content: space-between; align-items: center; margin-left: 50px; margin-right: 50px;">
+            &lt;div style="width: 30px; height: 30px;";>&lt;/div>
+                &lt;h2 style="text-align: center; font-size: 40px;">How to play&lt;/h2>
+            &lt;img style="width: 30px; height: 30px; cursor: pointer;" onclick="window.location.reload();" src="img/icons/close-icon.svg">
+        &lt;/div>
+        &lt;div class="tutorial-section">
+            &lt;div class="tutorial-content-box">
+                &lt;img src="img/icons/buttons.png">
+                &lt;p>Use the left and right arrow keys to move&lt;/p>
+            &lt;/div>
+            &lt;div class="tutorial-content-box">
+                &lt;img src="img/icons/keyboard.png">
+                &lt;p>Use the space bar to jump&lt;/p>
+            &lt;/div>
+            &lt;div class="tutorial-content-box">
+                &lt;img src="img/icons/shift.png">
+                &lt;p>Use the right Shift key to throw your kunai&lt;/p>
+            &lt;/div>
+        &lt;/div>
+    &lt;/div>
     `;
 }
 
@@ -463,4 +491,26 @@ function exitFullscreen() {
 function toggleMuteAllAudios() {
     isMuted = !isMuted;
     allAudios.forEach(audio => audio.muted = isMuted);
-}
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bomb.html">Bomb</a></li><li><a href="BossHealthBar.html">BossHealthBar</a></li><li><a href="Character.html">Character</a></li><li><a href="Cloud.html">Cloud</a></li><li><a href="CollectableObject.html">CollectableObject</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#enterFullscreen">enterFullscreen</a></li><li><a href="global.html#exitFullscreen">exitFullscreen</a></li><li><a href="global.html#fullscreen">fullscreen</a></li><li><a href="global.html#hideLoadingScreen">hideLoadingScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#level1">level1</a></li><li><a href="global.html#loadResources">loadResources</a></li><li><a href="global.html#restartGame">restartGame</a></li><li><a href="global.html#showLoadingScreen">showLoadingScreen</a></li><li><a href="global.html#showTutorial">showTutorial</a></li><li><a href="global.html#showWinningScreen">showWinningScreen</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleMuteAllAudios">toggleMuteAllAudios</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Jan 15 2025 14:22:45 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

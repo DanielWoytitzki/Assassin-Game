@@ -47,25 +47,25 @@ canvas {
     position: fixed;
     top: 190px;
     width: 720px;
-    height: 480px; 
+    height: 480px;
     display: none;
-    justify-content: center; 
-    align-items: center; 
-    background-color: black; 
-    color: white; 
-    font-size: 48px; 
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    color: white;
+    font-size: 48px;
     z-index: 4;
 }
 
 .gameoverscreen {
-    display: none; 
-    position: fixed; 
-    top: 190px; 
-    width: 720px; 
-    height: 480px; 
-    background: rgba(0, 0, 0, 0.8); 
-    color: white; 
-    text-align: center; 
+    display: none;
+    position: fixed;
+    top: 190px;
+    width: 720px;
+    height: 480px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
     font-size: 80px;
     justify-content: center;
     align-items: center;
@@ -75,14 +75,14 @@ canvas {
 }
 
 .winningscreen {
-    display: none; 
-    position: fixed; 
-    top: 190px; 
-    width: 720px; 
-    height: 480px; 
-    background: rgba(0, 0, 0, 0.8); 
-    color: white; 
-    text-align: center; 
+    display: none;
+    position: fixed;
+    top: 190px;
+    width: 720px;
+    height: 480px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
     font-size: 24px;
     justify-content: center;
     align-items: center;
@@ -106,7 +106,7 @@ canvas {
     justify-content: space-between;
     position: fixed;
     top: 190px;
-    width: 720px; 
+    width: 720px;
     height: 480px;
     z-index: 3;
 }

@@ -1,3 +1,8 @@
+/**
+ * Represents the main playable character in the game, extending a MovableObject
+ * with additional properties and methods for movement, animation, and collision.
+ * @extends MovableObject
+ */
 class Character extends MovableObject {
     speed = 3;
     y = -200;
@@ -59,6 +64,10 @@ class Character extends MovableObject {
     world;
     walking_sound = new Audio('audio/walking.mp3');
 
+    /**
+     * Initializes a new Character instance by setting up hitbox properties,
+     * loading images, applying gravity, and starting the animation loops.
+     */
     constructor() {
         super();
         this.hitboxWidth = this.width * 0.3;
@@ -77,13 +86,19 @@ class Character extends MovableObject {
         this.animate();
     }
 
+    /**
+     * Starts two interval-based loops:
+     * - One for moving the character (60 times per second).
+     * - One for updating the character's animations (10 times per second).
+     */
     animate() {
         setInterval(() => this.moveCharacter(), 1000 / 60);
         setInterval(() => this.playAnimationsCharacter(), 1000 / 10);
     }
 
     /**
-     * This Function is for moving the Player
+     * Handles horizontal movement, jumping, and camera positioning based on user input.
+     * Pauses or plays walking sounds as needed, and resets idle timer when moving or jumping.
      */
     moveCharacter() {
         this.walking_sound.pause();
@@ -102,10 +117,19 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Determines if the character is allowed to move to the right based on keyboard input
+     * and the level boundary.
+     * @returns {boolean} True if the character can move right, otherwise false.
+     */
     canMoveRight() {
         return this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x;
     }
 
+    /**
+     * Moves the character to the right, flips the direction if needed,
+     * plays the walking sound, and resets the idle timer.
+     */
     moveRight() {
         super.moveRight();
         this.otherDirection = false;
@@ -113,10 +137,19 @@ class Character extends MovableObject {
         this.idleTimer = 0;
     }
 
+    /**
+     * Determines if the character is allowed to move to the left based on keyboard input
+     * and the left boundary (x > 0).
+     * @returns {boolean} True if the character can move left, otherwise false.
+     */
     canMoveLeft() {
         return this.world.keyboard.LEFT && this.x > 0;
     }
 
+    /**
+     * Moves the character to the left if the boss hasn't been reached (or if x > 2000),
+     * flips the direction if needed, plays the walking sound, and resets the idle timer.
+     */
     moveLeft() {
         if (!this.world.bossReached || this.x > 2000) {
             super.moveLeft();
@@ -126,12 +159,22 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Determines if the character can jump based on keyboard input and whether
+     * the character is currently above the ground.
+     * @returns {boolean} True if the character can jump, otherwise false.
+     */
     canJump() {
         return this.world.keyboard.SPACE && !this.isAboveGround();
     }
 
     /**
-     * This Function loads all animations from the Player
+     * Plays the appropriate character animations based on the character's state:
+     * - Dead: plays death animation
+     * - Hurt: plays hurt animation
+     * - Above ground: plays jumping animation
+     * - Moving (left/right): plays walking animation
+     * - Idle: plays idle animation after a certain idle time (2 seconds)
      */
     playAnimationsCharacter() {
         if (this.isDead()) {

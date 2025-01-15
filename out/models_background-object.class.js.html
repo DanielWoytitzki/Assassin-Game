@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: models/background-object.class.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,39 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: models/background-object.class.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Represents a background object in the game, extending the functionality
+ * of a MovableObject. These objects are typically used to display
+ * static or scrolling backgrounds.
+ * @extends MovableObject
+ */
+class BackgroundObject extends MovableObject {
+    width = 720;
+    height = 480;
 
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+    /**
+     * Creates a BackgroundObject instance and positions it in the scene.
+     *
+     * @param {string} imagePath - The path to the image that represents the background.
+     * @param {number} x - The x-coordinate where the background object will be placed.
+     */
+    constructor(imagePath, x) {
+        super().loadImage(imagePath);
+        this.x = x;
+        this.y = 480 - this.height;
+    }
+}</code></pre>
+        </article>
+    </section>
 
 
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Source: models/level.class.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,32 +17,43 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
+    <h1 class="page-title">Source: models/level.class.js</h1>
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Represents a game level, which contains enemies, clouds, background objects,
+ * and collectable items. It also defines the horizontal end boundary of the level.
+ */
+class Level {
+    enemies;
+    clouds;
+    backgroundObjects;
+    collectables;
+    level_end_x = 2300;
 
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
+    /**
+    * Creates a new level instance.
+    *
+    * @param {Enemy[]} enemies - The array of enemies to include in the level.
+    * @param {Cloud[]} clouds - The array of cloud objects for the level.
+    * @param {BackgroundObject[]} backgroundObjects - The array of background objects.
+    * @param {CollectableObject[]} collectables - The array of collectable items.
+    */
+    constructor(enemies, clouds, backgroundObjects, collectables) {
+        this.enemies = enemies;
+        this.clouds = clouds;
+        this.backgroundObjects = backgroundObjects;
+        this.collectables = collectables;
+    }
+}</code></pre>
+        </article>
+    </section>
 
 
 
