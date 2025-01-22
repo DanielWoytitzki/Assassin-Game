@@ -73,6 +73,8 @@ function initLevel() {
             new CollectableObject(600, 360, 'coin', 130, 130),
             new CollectableObject(700, 390, 'knife', 70, 70),
             new CollectableObject(750, 390, 'knife', 70, 70),
+            new CollectableObject(800, 390, 'knife', 70, 70),
+            new CollectableObject(850, 390, 'knife', 70, 70),
             new CollectableObject(650, 160, 'coin', 130, 130),
             new CollectableObject(700, 160, 'coin', 130, 130),
             new CollectableObject(750, 160, 'coin', 130, 130),

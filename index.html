@@ -32,7 +32,6 @@
     <div class="startscreen" id="startScreen">
         <button onclick="init()" id="startButton" style="--clr:#22B14C"><span>Start Game</span><i></i></button>
         <button onclick="showTutorial()" style="--clr:#22B14C"><span>How to play</span><i></i></button>
-        <button onclick="alert('Feature coming soon!')" style="--clr:#22B14C"><span>Settings</span><i></i></button>
         <button onclick=" window.open('imprint.html', '_blank')"
             style="--clr:#22B14C"><span>Imprint</span><i></i></button>
     </div>
@@ -41,10 +40,11 @@
         Loading...
     </div>
 
-    <h1 class="game-headline">Assassin's Game</h1>
+    <h1>Assassin's Game</h1>
 
     <div class="ingame-buttons">
         <div class="ingame-buttons-top">
+            <img onclick="showTutorial()" src="./img/icons/help-icon.png" alt="">
             <img onclick="toggleMuteAllAudios()" src="./img/icons/mute.png" alt="">
             <img class="fullscreen-img" onclick="fullscreen()" src="./img/icons/fullscreen.png" alt="">
         </div>

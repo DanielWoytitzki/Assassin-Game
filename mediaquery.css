@@ -18,7 +18,7 @@
 }
 
 @media (max-height: 675px) {
-    .game-headline {
+    h1 {
         display: none;
     }
 

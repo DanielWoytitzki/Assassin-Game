@@ -1,6 +1,7 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let win_sound = new Audio('audio/win-sound.mp3');
 const allAudios = [];
 let isMuted = false;
 const OriginalAudio = Audio;
@@ -45,8 +46,7 @@ function hideLoadingScreen() {
  */
 function showWinningScreen() {
     document.getElementById('winningScreen').style.display = 'flex';
-    const winSound = new Audio('audio/win-sound.mp3');
-    winSound.play();
+    win_sound.play();
     document.getElementById('scoreDisplay').innerText = `Coins Collected: ${world.collectedCoins} / 27`;
 }
 
@@ -306,7 +306,7 @@ function showTutorial() {
         <div style="display: flex; justify-content: space-between; align-items: center; margin-left: 50px; margin-right: 50px;">
             <div style="width: 30px; height: 30px;";></div>
                 <h2 style="text-align: center; font-size: 40px;">How to play</h2>
-            <img style="width: 30px; height: 30px; cursor: pointer;" onclick="window.location.reload();" src="img/icons/close-icon.svg">
+            <img style="width: 30px; height: 30px; cursor: pointer;" onclick="closeTutorial();" src="img/icons/close-icon.svg">
         </div>
         <div class="tutorial-section">
             <div class="tutorial-content-box">
@@ -324,6 +324,11 @@ function showTutorial() {
         </div>
     </div>
     `;
+}
+
+function closeTutorial() {
+    let content = document.getElementById('keybindsDiv');
+    content.innerHTML = ''; 
 }
 
 /**

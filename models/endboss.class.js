@@ -93,8 +93,9 @@ class Endboss extends MovableObject {
         'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_028.png',
         'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_029.png'
     ];
-    hurtSound = new Audio('audio/hurt-sound-endboss.mp3');
-    deathSound = new Audio('audio/enemy-dead.mp3');
+    hurt_sound = new Audio('audio/hurt-sound-endboss.mp3');
+    death_sound = new Audio('audio/enemy-dead.mp3');
+    throw_sound = new Audio('audio/throw-bomb.mp3');
 
 /**
      * Creates an instance of the endboss, loads required images,
@@ -122,8 +123,7 @@ throwBomb() {
         if (bomb) {
             this.world.bossBombs.push(bomb);
         }
-        const throwSound = new Audio('audio/throw-bomb.mp3');
-        throwSound.play();
+        this.throw_sound.play();
     }
 }
 
@@ -206,7 +206,7 @@ takeDamage() {
  */
 playHurtAnimation() {
     this.isHurt = true;
-    this.hurtSound.play();
+    this.hurt_sound.play();
     this.playAnimation(this.IMAGES_HURT);
     setTimeout(() => {
         this.isHurt = false;
@@ -219,7 +219,7 @@ playHurtAnimation() {
  */
 playDeathAnimation() {
     this.isDead = true;
-    this.deathSound.play();
+    this.death_sound.play();
     let animationIndex = 0;
     const deathAnimationInterval = setInterval(() => {
         if (animationIndex < this.IMAGES_DEATH.length) {

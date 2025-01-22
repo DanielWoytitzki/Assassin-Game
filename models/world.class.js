@@ -18,6 +18,10 @@ class World {
     availableKnives = 0;
     backgroundMusic = new Audio('audio/background.mp3');
     bossMusic = new Audio('audio/endboss-music.mp3');
+    gameover_sound = new Audio('audio/game-over.mp3');
+    throw_sound = new Audio('audio/knife-throw.mp3');
+    bomb_hit_sound = new Audio('audio/bomb-explosion.mp3');
+    enemy_death_sound = new Audio('audio/enemy-dead.mp3');
     bossBombs = [];
     bossReached = false;
 
@@ -89,8 +93,7 @@ class World {
      */
     showGameOverScreen() {
         document.getElementById('gameOverScreen').style.display = 'flex';
-        const gameOverSound = new Audio('audio/game-over.mp3');
-        gameOverSound.play();
+        this.gameover_sound.play();
     }
 
     /**
@@ -173,11 +176,10 @@ class World {
      * and added to the game world.
      */
     checkThrowObjects() {
-        const throwSound = new Audio('audio/knife-throw.mp3');
         if (this.keyboard.RSHIFT && this.canThrow && this.availableKnives > 0) {
             let knife = new ThrowableObject(this.character.x + 100, this.character.y + 100);
             this.throwableObjects.push(knife);
-            throwSound.play();
+            this.throw_sound.play();
             this.canThrow = false;
             this.availableKnives--;
         }
@@ -217,9 +219,8 @@ class World {
             if (this.character.isColliding(bomb)) {
                 this.character.hit();
                 this.bossBombs.splice(index, 1);
-                const hitSound = new Audio('audio/bomb-explosion.mp3');
-                hitSound.volume = 0.5;
-                hitSound.play();
+                this.bomb_hit_sound.volume = 0.5;
+                this.bomb_hit_sound.play();
             }
         });
     }
@@ -247,8 +248,7 @@ class World {
             return;
         }
         enemy.isDead = true;
-        const deathSound = new Audio('audio/enemy-dead.mp3');
-        deathSound.play();
+        this.enemy_death_sound.play();
         enemy.playDeathAnimation();
         setTimeout(() => {
             let index = this.level.enemies.indexOf(enemy);
@@ -264,8 +264,7 @@ class World {
      * from the level after a delay.
      */
     handleBossDeath() {
-        const deathSound = new Audio('audio/boss-dead.mp3');
-        deathSound.play();
+        this.enemy_death_sound.play();
         this.level.endboss.playDeathAnimation();
         setTimeout(() => {
             this.level.endboss = null;

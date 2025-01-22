@@ -37,10 +37,10 @@ class CollectableObject extends DrawableObject {
             this.loadImage('img/knife/PNG/knife.png');
         }
         if (this.type === 'coin') {
-            this.collectSound = new Audio('audio/collect-coin.mp3');
+            this.collect_sound = new Audio('audio/collect-coin.mp3');
         }
         if (this.type === 'knife') {
-            this.collectSound = new Audio('audio/collect-knife.mp3');
+            this.collect_sound = new Audio('audio/collect-knife.mp3');
         }
     }
 
@@ -49,8 +49,8 @@ class CollectableObject extends DrawableObject {
      * Used when the player picks up this object.
      */
     playCollectSound() {
-        if (this.collectSound) {
-            this.collectSound.play();
+        if (this.collect_sound) {
+            this.collect_sound.play();
         }
     }
 }

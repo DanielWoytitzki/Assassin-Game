@@ -13,6 +13,8 @@ class MovableObject extends DrawableObject {
     lastHit = 0;
     hitboxWidth = this.width * 1;
     hitboxHeight = this.height * 1;
+    hurt_sound = new Audio('audio/character-damage.mp3');
+    jump_sound = new Audio('audio/jump.mp3');
 
     /**
      * Applies gravity to this object by updating its vertical position (`y`)
@@ -66,12 +68,11 @@ class MovableObject extends DrawableObject {
     * since the last hit. Plays a hurt sound if successfully hit.
     */
     hit() {
-        const hurtSound = new Audio('audio/character-damage.mp3');
         const currentTime = new Date().getTime();
         if (currentTime - this.lastHit > 1000) {
             this.energy -= 20;
             this.lastHit = currentTime;
-            hurtSound.play();
+            this.hurt_sound.play();
         }
         if (this.energy < 0) {
             this.energy = 0;
@@ -131,8 +132,7 @@ class MovableObject extends DrawableObject {
      * object to move upward. Plays a jump sound effect.
      */
     jump() {
-        const jumpSound = new Audio('audio/jump.mp3');
         this.speedY = 30;
-        jumpSound.play();
+        this.jump_sound.play();
     }
 }
