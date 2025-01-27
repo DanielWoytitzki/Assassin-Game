@@ -328,7 +328,7 @@ function showTutorial() {
 
 function closeTutorial() {
     let content = document.getElementById('keybindsDiv');
-    content.innerHTML = ''; 
+    content.innerHTML = '';
 }
 
 /**
@@ -428,38 +428,6 @@ setInterval(() => {
         keyboard.RSHIFT = false;
     });
 }, 50);
-
-/**
- * Requests the browser to show the game in fullscreen mode.
- */
-function fullscreen() {
-    let fullscreen = document.getElementById('fullscreen');
-    enterFullscreen(fullscreen);
-}
-
-/**
- * Enters fullscreen mode for a given DOM element, if supported by the browser.
- * @param {HTMLElement} element - The element to display in fullscreen.
- */
-function enterFullscreen(element) {
-    if (element.requestFullscreen) {
-        element.requestFullscreen();
-    } else if (element.msRequestFullscreen) {
-    } else if (element.webkitRequestFullscreen) {
-        element.webkitRequestFullscreen();
-    }
-}
-
-/**
- * Exits fullscreen mode if the browser currently has an element in fullscreen.
- */
-function exitFullscreen() {
-    if (document.exitFullscreen) {
-        document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-    }
-}
 
 /**
  * Toggles the muted state of all audio elements tracked in {@link allAudios}.

@@ -1,4 +1,4 @@
-@media (max-height: 1120px) {
+@media (max-height: 1137px) {
     .tutorial-responsive {
         position: fixed;
         top: 190px;
@@ -14,6 +14,22 @@
 
     .tutorial-content-box img {
         width: 120px;
+    }
+}
+
+@media (pointer: coarse) {
+    .ingame-buttons-bottom {
+        display: flex;
+    }
+
+    .d-none {
+        display: none;
+    }
+}
+
+@media (pointer: coarse) and (orientation: portrait) {
+    .rotate-message {
+        display: flex;
     }
 }
 
@@ -52,7 +68,7 @@
         width: 100% !important;
     }
 
-   .canvas-div {
+    .canvas-div {
         width: 100% !important;
     }
 
@@ -84,10 +100,6 @@
     .ingame-buttons {
         top: 0 !important;
         width: 100%;
-    }
-
-    .ingame-buttons-bottom {
-        display: flex;
     }
 
     .fullscreen-img {
@@ -132,10 +144,6 @@
     .ingame-buttons {
         top: 0 !important;
         height: 100vh !important;
-    }
-
-    .ingame-buttons-bottom {
-        display: flex;
     }
 
     .fullscreen-img {

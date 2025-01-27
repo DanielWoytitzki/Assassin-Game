@@ -29,24 +29,40 @@
 
 <body>
 
+    <div class="rotate-message">
+        <div class="rotate-message-icons">
+            <img style="height: 104px;" src="./img/gif/idle-character-device-turn.gif" alt="">
+            <img style="height: 104px;" src="./img/gif/turn-device.gif" alt="">
+        </div>
+        <div>
+            Please turn your Device to play!
+        </div>
+    </div>
+
     <div class="startscreen" id="startScreen">
         <button onclick="init()" id="startButton" style="--clr:#22B14C"><span>Start Game</span><i></i></button>
-        <button onclick="showTutorial()" style="--clr:#22B14C"><span>How to play</span><i></i></button>
+        <button class="d-none" onclick="showTutorial()" style="--clr:#22B14C"><span>How to play</span><i></i></button>
         <button onclick=" window.open('imprint.html', '_blank')"
             style="--clr:#22B14C"><span>Imprint</span><i></i></button>
     </div>
 
     <div class="loadingscreen" id="loadingScreen">
-        Loading...
+        <div></div>
+        <div class="loadingscreen-text">
+            Be careful! The enemy's soul can still hit you
+        </div>
+        <div class="loadingscreen-loading">
+            <span>Loading</span>
+            <img src="./img/gif/loading.gif" alt="">
+        </div>
     </div>
 
     <h1>Assassin's Game</h1>
 
     <div class="ingame-buttons">
         <div class="ingame-buttons-top">
-            <img onclick="showTutorial()" src="./img/icons/help-icon.png" alt="">
+            <img class="d-none" onclick="showTutorial()" src="./img/icons/help-icon.png" alt="">
             <img onclick="toggleMuteAllAudios()" src="./img/icons/mute.png" alt="">
-            <img class="fullscreen-img" onclick="fullscreen()" src="./img/icons/fullscreen.png" alt="">
         </div>
         <div class="ingame-buttons-bottom">
             <div style="display: flex; gap: 40px;">
@@ -54,8 +70,8 @@
                 <img id="btnRight" src="./img/icons/right-arrow.png" alt="">
             </div>
             <div style="display: flex; gap: 40px;">
-                <img id="btnJump" src="./img/icons/cross-button.png" alt="">
-                <img id="btnThrow" src="./img/icons/circle-button.png" alt="">
+                <img id="btnJump" src="./img/icons/up-arrow.png" alt="">
+                <img id="btnThrow" src="./img/icons/cross-button.png" alt="">
             </div>
         </div>
     </div>

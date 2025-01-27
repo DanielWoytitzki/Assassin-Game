@@ -190,7 +190,7 @@ class Character extends MovableObject {
             this.idleTimer = 0;
         } else {
             this.idleTimer += 100;
-            if (this.idleTimer > 2000) {
+            if (this.idleTimer > 0) {
                 this.playAnimation(this.IMAGES_IDLE);
             }
         }
