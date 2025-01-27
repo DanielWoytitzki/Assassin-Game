@@ -436,4 +436,12 @@ setInterval(() => {
 function toggleMuteAllAudios() {
     isMuted = !isMuted;
     allAudios.forEach(audio => audio.muted = isMuted);
+
+    const img = document.getElementById('toggleMuteImage');
+  
+    if (img.getAttribute('src') === 'img/icons/mute.png') {
+      img.setAttribute('src', 'img/icons/volume.png');
+    } else {
+      img.setAttribute('src', 'img/icons/mute.png');
+    }
 }
