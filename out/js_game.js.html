@@ -29,6 +29,7 @@
             <pre class="prettyprint source linenums"><code>let canvas;
 let world;
 let keyboard = new Keyboard();
+let win_sound = new Audio('audio/win-sound.mp3');
 const allAudios = [];
 let isMuted = false;
 const OriginalAudio = Audio;
@@ -73,8 +74,7 @@ function hideLoadingScreen() {
  */
 function showWinningScreen() {
     document.getElementById('winningScreen').style.display = 'flex';
-    const winSound = new Audio('audio/win-sound.mp3');
-    winSound.play();
+    win_sound.play();
     document.getElementById('scoreDisplay').innerText = `Coins Collected: ${world.collectedCoins} / 27`;
 }
 
@@ -334,7 +334,7 @@ function showTutorial() {
         &lt;div style="display: flex; justify-content: space-between; align-items: center; margin-left: 50px; margin-right: 50px;">
             &lt;div style="width: 30px; height: 30px;";>&lt;/div>
                 &lt;h2 style="text-align: center; font-size: 40px;">How to play&lt;/h2>
-            &lt;img style="width: 30px; height: 30px; cursor: pointer;" onclick="window.location.reload();" src="img/icons/close-icon.svg">
+            &lt;img style="width: 30px; height: 30px; cursor: pointer;" onclick="closeTutorial();" src="img/icons/close-icon.svg">
         &lt;/div>
         &lt;div class="tutorial-section">
             &lt;div class="tutorial-content-box">
@@ -354,6 +354,11 @@ function showTutorial() {
     `;
 }
 
+function closeTutorial() {
+    let content = document.getElementById('keybindsDiv');
+    content.innerHTML = '';
+}
+
 /**
  * Starts the game by setting up the canvas, creating a new World instance,
  * playing background music, and adding key event listeners for user input.
@@ -370,6 +375,11 @@ function startGame() {
     world = new World(canvas, keyboard);
     world.backgroundMusic.play().catch(error => {
     });
+    eventKeyDown();
+    eventKeyUp();
+}
+
+function eventKeyDown() {
     window.addEventListener("keydown", (event) => {
         if (event.keyCode == 39) {
             keyboard.RIGHT = true;
@@ -390,6 +400,9 @@ function startGame() {
             keyboard.RSHIFT = true;
         }
     });
+}
+
+function eventKeyUp() {
     window.addEventListener("keyup", (event) => {
         if (event.keyCode == 39) {
             keyboard.RIGHT = false;
@@ -418,6 +431,13 @@ function startGame() {
  * properties just like normal keyboard events do.
  */
 setInterval(() => {
+    eventTouchLeft();
+    eventTouchRight();
+    eventTouchJump();
+    eventTouchThrow();
+}, 50);
+
+function eventTouchLeft() {
     document.getElementById('btnLeft').addEventListener('touchstart', (event) => {
         event.preventDefault();
         keyboard.LEFT = true;
@@ -426,6 +446,9 @@ setInterval(() => {
         event.preventDefault();
         keyboard.LEFT = false;
     });
+}
+
+function eventTouchRight() {
     document.getElementById('btnRight').addEventListener('touchstart', (event) => {
         event.preventDefault();
         keyboard.RIGHT = true;
@@ -434,6 +457,9 @@ setInterval(() => {
         event.preventDefault();
         keyboard.RIGHT = false;
     });
+}
+
+function eventTouchJump() {
     document.getElementById('btnJump').addEventListener('touchstart', (event) => {
         event.preventDefault();
         keyboard.SPACE = true;
@@ -442,6 +468,9 @@ setInterval(() => {
         event.preventDefault();
         keyboard.SPACE = false;
     });
+}
+
+function eventTouchThrow() {
     document.getElementById('btnThrow').addEventListener('touchstart', (event) => {
         event.preventDefault();
         keyboard.RSHIFT = true;
@@ -450,38 +479,6 @@ setInterval(() => {
         event.preventDefault();
         keyboard.RSHIFT = false;
     });
-}, 50);
-
-/**
- * Requests the browser to show the game in fullscreen mode.
- */
-function fullscreen() {
-    let fullscreen = document.getElementById('fullscreen');
-    enterFullscreen(fullscreen);
-}
-
-/**
- * Enters fullscreen mode for a given DOM element, if supported by the browser.
- * @param {HTMLElement} element - The element to display in fullscreen.
- */
-function enterFullscreen(element) {
-    if (element.requestFullscreen) {
-        element.requestFullscreen();
-    } else if (element.msRequestFullscreen) {
-    } else if (element.webkitRequestFullscreen) {
-        element.webkitRequestFullscreen();
-    }
-}
-
-/**
- * Exits fullscreen mode if the browser currently has an element in fullscreen.
- */
-function exitFullscreen() {
-    if (document.exitFullscreen) {
-        document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-    }
 }
 
 /**
@@ -491,6 +488,14 @@ function exitFullscreen() {
 function toggleMuteAllAudios() {
     isMuted = !isMuted;
     allAudios.forEach(audio => audio.muted = isMuted);
+
+    const img = document.getElementById('toggleMuteImage');
+
+    if (img.getAttribute('src') === 'img/icons/mute.png') {
+        img.setAttribute('src', 'img/icons/volume.png');
+    } else {
+        img.setAttribute('src', 'img/icons/mute.png');
+    }
 }</code></pre>
         </article>
     </section>
@@ -501,13 +506,13 @@ function toggleMuteAllAudios() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bomb.html">Bomb</a></li><li><a href="BossHealthBar.html">BossHealthBar</a></li><li><a href="Character.html">Character</a></li><li><a href="Cloud.html">Cloud</a></li><li><a href="CollectableObject.html">CollectableObject</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#enterFullscreen">enterFullscreen</a></li><li><a href="global.html#exitFullscreen">exitFullscreen</a></li><li><a href="global.html#fullscreen">fullscreen</a></li><li><a href="global.html#hideLoadingScreen">hideLoadingScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#level1">level1</a></li><li><a href="global.html#loadResources">loadResources</a></li><li><a href="global.html#restartGame">restartGame</a></li><li><a href="global.html#showLoadingScreen">showLoadingScreen</a></li><li><a href="global.html#showTutorial">showTutorial</a></li><li><a href="global.html#showWinningScreen">showWinningScreen</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleMuteAllAudios">toggleMuteAllAudios</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bomb.html">Bomb</a></li><li><a href="BossHealthBar.html">BossHealthBar</a></li><li><a href="Character.html">Character</a></li><li><a href="Cloud.html">Cloud</a></li><li><a href="CollectableObject.html">CollectableObject</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#hideLoadingScreen">hideLoadingScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#level1">level1</a></li><li><a href="global.html#loadResources">loadResources</a></li><li><a href="global.html#restartGame">restartGame</a></li><li><a href="global.html#showLoadingScreen">showLoadingScreen</a></li><li><a href="global.html#showTutorial">showTutorial</a></li><li><a href="global.html#showWinningScreen">showWinningScreen</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleMuteAllAudios">toggleMuteAllAudios</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Jan 15 2025 14:22:45 GMT+0100 (Mitteleuropäische Normalzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Jan 27 2025 21:27:04 GMT+0100 (Mitteleuropäische Normalzeit)
 </footer>
 
 <script> prettyPrint(); </script>

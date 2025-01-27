@@ -121,146 +121,152 @@ class Endboss extends MovableObject {
         'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_028.png',
         'img/enemies/Warrior_animations/Left_Side/PNG Sequences/Warrior_clothes_2/Died/0_Warrior_Died_029.png'
     ];
-    hurtSound = new Audio('audio/hurt-sound-endboss.mp3');
-    deathSound = new Audio('audio/enemy-dead.mp3');
+    hurt_sound = new Audio('audio/hurt-sound-endboss.mp3');
+    death_sound = new Audio('audio/enemy-dead.mp3');
+    throw_sound = new Audio('audio/throw-bomb.mp3');
 
-/**
-     * Creates an instance of the endboss, loads required images,
-     * sets the starting position, and initializes the health bar.
+    /**
+         * Creates an instance of the endboss, loads required images,
+         * sets the starting position, and initializes the health bar.
+         */
+    constructor() {
+        super().loadImage(this.IMAGES_WALKING[0]);
+        this.loadImages(this.IMAGES_WALKING);
+        this.loadImages(this.IMAGES_HURT);
+        this.loadImages(this.IMAGES_DEATH);
+        this.x = 2400;
+        this.healthBar = new BossHealthBar(this);
+        this.animate();
+    }
+
+    /**
+     * Throws a bomb if the world is available, creating a new Bomb instance
+     * and playing a throw sound effect.
      */
-constructor() {
-    super().loadImage(this.IMAGES_WALKING[0]);
-    this.loadImages(this.IMAGES_WALKING);
-    this.loadImages(this.IMAGES_HURT);
-    this.loadImages(this.IMAGES_DEATH);
-    this.x = 2400;
-    this.healthBar = new BossHealthBar(this);
-    this.animate();
-}
-
-/**
- * Throws a bomb if the world is available, creating a new Bomb instance
- * and playing a throw sound effect.
- */
-throwBomb() {
-    if (this.world) {
-        let bombX = this.x + 100;
-        let bombY = this.y + this.height / 10;
-        let bomb = new Bomb(bombX, bombY);
-        if (bomb) {
-            this.world.bossBombs.push(bomb);
+    throwBomb() {
+        if (this.world) {
+            let bombX = this.x + 100;
+            let bombY = this.y + this.height / 10;
+            let bomb = new Bomb(bombX, bombY);
+            if (bomb) {
+                this.world.bossBombs.push(bomb);
+            }
+            this.throw_sound.play();
         }
-        const throwSound = new Audio('audio/throw-bomb.mp3');
-        throwSound.play();
     }
-}
 
-/**
- * Animates the endboss in intervals, checking if it should throw bombs
- * or play boss music when the character is within a certain range.
- */
-animate() {
-    setInterval(() => {
-        if (this.health > 0 &amp;&amp; !this.isDead) {
-            if (!this.isHurt) {
-                this.playAnimation(this.IMAGES_WALKING);
-            }
-            if (
-                this.world &amp;&amp;
-                Math.abs(this.x - this.world.character.x) &lt; 500 &amp;&amp;
-                !this.throwBombInterval
-            ) {
-                this.startThrowingBombs();
-            }
-            if (this.world &amp;&amp; Math.abs(this.x - this.world.character.x) &lt; 500) {
-                if (!this.isBossMusicPlaying) {
-                    this.startBossMusic();
-                    this.isBossMusicPlaying = true;
-                }
-                this.world.bossReached = true;
-            }
-        }
-    }, 1000 / 20);
-}
-
-/**
- * Pauses the background music and starts playing the boss music.
- */
-startBossMusic() {
-    this.world.backgroundMusic.pause();
-    this.world.bossMusic.currentTime = 0;
-    this.world.bossMusic.play();
-}
-
-/**
- * Initiates timed bomb throws while the endboss is alive.
- */
-startThrowingBombs() {
-    if (!this.throwBombInterval) {
-        this.throwBombInterval = setInterval(() => {
+    /**
+     * Animates the endboss in intervals, checking if it should throw bombs.
+     */
+    animate() {
+        setInterval(() => {
             if (this.health > 0 &amp;&amp; !this.isDead) {
-                this.throwBomb();
+                if (!this.isHurt) {
+                    this.playAnimation(this.IMAGES_WALKING);
+                }
+                if (
+                    this.world &amp;&amp;
+                    Math.abs(this.x - this.world.character.x) &lt; 500 &amp;&amp;
+                    !this.throwBombInterval
+                ) {
+                    this.startThrowingBombs();
+                }
+                this.isNearBoss();
             }
-        }, 2000);
+        }, 1000 / 20);
     }
-}
 
-/**
- * Draws the endboss and its health bar onto the canvas.
- * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
- */
-draw(ctx) {
-    super.draw(ctx);
-    this.healthBar.draw(ctx);
-}
-
-/**
- * Decreases the endboss's health. Plays the hurt or death animation
- * depending on the current health.
- */
-takeDamage() {
-    if (this.health > 0 &amp;&amp; !this.isDead) {
-        this.health--;
-        this.playHurtAnimation();
-    }
-    if (this.health &lt;= 0 &amp;&amp; !this.isDead) {
-        this.playDeathAnimation();
-    }
-}
-
-/**
- * Plays the hurt animation and temporarily sets the endboss
- * to the "hurt" state.
- */
-playHurtAnimation() {
-    this.isHurt = true;
-    this.hurtSound.play();
-    this.playAnimation(this.IMAGES_HURT);
-    setTimeout(() => {
-        this.isHurt = false;
-    }, 1000);
-}
-
-/**
- * Plays the death animation, pauses the boss music, and
- * displays the winning screen afterward.
- */
-playDeathAnimation() {
-    this.isDead = true;
-    this.deathSound.play();
-    let animationIndex = 0;
-    const deathAnimationInterval = setInterval(() => {
-        if (animationIndex &lt; this.IMAGES_DEATH.length) {
-            this.img = this.imageCache[this.IMAGES_DEATH[animationIndex]];
-            animationIndex++;
-        } else {
-            clearInterval(deathAnimationInterval);
-            this.dead = true;
-            this.world.bossMusic.pause();
-            showWinningScreen();
+    /**
+     * Play boss music when the character is within a certain range.
+     */
+    isNearBoss() {
+        if (this.world &amp;&amp; Math.abs(this.x - this.world.character.x) &lt; 500) {
+            if (!this.isBossMusicPlaying) {
+                this.startBossMusic();
+                this.isBossMusicPlaying = true;
+            }
+            this.world.bossReached = true;
         }
-    }, 1000 / 20);
-}
+    }
+
+    /**
+     * Pauses the background music and starts playing the boss music.
+     */
+    startBossMusic() {
+        this.world.backgroundMusic.pause();
+        this.world.bossMusic.currentTime = 0;
+        this.world.bossMusic.play();
+    }
+
+    /**
+     * Initiates timed bomb throws while the endboss is alive.
+     */
+    startThrowingBombs() {
+        if (!this.throwBombInterval) {
+            this.throwBombInterval = setInterval(() => {
+                if (this.health > 0 &amp;&amp; !this.isDead) {
+                    this.throwBomb();
+                }
+            }, 2000);
+        }
+    }
+
+    /**
+     * Draws the endboss and its health bar onto the canvas.
+     * @param {CanvasRenderingContext2D} ctx - The canvas rendering context.
+     */
+    draw(ctx) {
+        super.draw(ctx);
+        this.healthBar.draw(ctx);
+    }
+
+    /**
+     * Decreases the endboss's health. Plays the hurt or death animation
+     * depending on the current health.
+     */
+    takeDamage() {
+        if (this.health > 0 &amp;&amp; !this.isDead) {
+            this.health--;
+            this.playHurtAnimation();
+        }
+        if (this.health &lt;= 0 &amp;&amp; !this.isDead) {
+            this.playDeathAnimation();
+        }
+    }
+
+    /**
+     * Plays the hurt animation and temporarily sets the endboss
+     * to the "hurt" state.
+     */
+    playHurtAnimation() {
+        this.isHurt = true;
+        this.hurt_sound.play();
+        this.playAnimation(this.IMAGES_HURT);
+        setTimeout(() => {
+            this.isHurt = false;
+        }, 1000);
+    }
+
+    /**
+     * Plays the death animation, pauses the boss music, and
+     * displays the winning screen afterward.
+     */
+    playDeathAnimation() {
+        this.isDead = true;
+        this.death_sound.play();
+        let animationIndex = 0;
+        const deathAnimationInterval = setInterval(() => {
+            if (animationIndex &lt; this.IMAGES_DEATH.length) {
+                this.img = this.imageCache[this.IMAGES_DEATH[animationIndex]];
+                animationIndex++;
+            } else {
+                clearInterval(deathAnimationInterval);
+                this.dead = true;
+                this.world.bossMusic.pause();
+                showWinningScreen();
+            }
+        }, 1000 / 20);
+    }
 }</code></pre>
         </article>
     </section>
@@ -271,13 +277,13 @@ playDeathAnimation() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bomb.html">Bomb</a></li><li><a href="BossHealthBar.html">BossHealthBar</a></li><li><a href="Character.html">Character</a></li><li><a href="Cloud.html">Cloud</a></li><li><a href="CollectableObject.html">CollectableObject</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#enterFullscreen">enterFullscreen</a></li><li><a href="global.html#exitFullscreen">exitFullscreen</a></li><li><a href="global.html#fullscreen">fullscreen</a></li><li><a href="global.html#hideLoadingScreen">hideLoadingScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#level1">level1</a></li><li><a href="global.html#loadResources">loadResources</a></li><li><a href="global.html#restartGame">restartGame</a></li><li><a href="global.html#showLoadingScreen">showLoadingScreen</a></li><li><a href="global.html#showTutorial">showTutorial</a></li><li><a href="global.html#showWinningScreen">showWinningScreen</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleMuteAllAudios">toggleMuteAllAudios</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bomb.html">Bomb</a></li><li><a href="BossHealthBar.html">BossHealthBar</a></li><li><a href="Character.html">Character</a></li><li><a href="Cloud.html">Cloud</a></li><li><a href="CollectableObject.html">CollectableObject</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#hideLoadingScreen">hideLoadingScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#level1">level1</a></li><li><a href="global.html#loadResources">loadResources</a></li><li><a href="global.html#restartGame">restartGame</a></li><li><a href="global.html#showLoadingScreen">showLoadingScreen</a></li><li><a href="global.html#showTutorial">showTutorial</a></li><li><a href="global.html#showWinningScreen">showWinningScreen</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleMuteAllAudios">toggleMuteAllAudios</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Jan 15 2025 14:22:45 GMT+0100 (Mitteleuropäische Normalzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Jan 27 2025 21:27:04 GMT+0100 (Mitteleuropäische Normalzeit)
 </footer>
 
 <script> prettyPrint(); </script>

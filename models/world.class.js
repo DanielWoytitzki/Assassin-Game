@@ -195,12 +195,21 @@ class World {
      *  - Character vs. boss bombs (damages character if collided).
      */
     checkCollisions() {
+        this.checkEnemyHit();
+        this.checkKnifeHit();
+        this.checkBombHit();
+    }
+
+    checkEnemyHit() {
         this.level.enemies.forEach((enemy, enemyIndex) => {
             if (this.character.isColliding(enemy)) {
                 this.character.hit();
                 this.statusBar.setPercentage(this.character.energy);
             }
         });
+    }
+
+    checkKnifeHit() {
         this.throwableObjects.forEach((throwableObject, throwableIndex) => {
             for (let enemyIndex = 0; enemyIndex < this.level.enemies.length; enemyIndex++) {
                 let enemy = this.level.enemies[enemyIndex];
@@ -215,6 +224,9 @@ class World {
                 }
             }
         });
+    }
+
+    checkBombHit() {
         this.bossBombs.forEach((bomb, index) => {
             if (this.character.isColliding(bomb)) {
                 this.character.hit();

@@ -46,6 +46,10 @@ class World {
     availableKnives = 0;
     backgroundMusic = new Audio('audio/background.mp3');
     bossMusic = new Audio('audio/endboss-music.mp3');
+    gameover_sound = new Audio('audio/game-over.mp3');
+    throw_sound = new Audio('audio/knife-throw.mp3');
+    bomb_hit_sound = new Audio('audio/bomb-explosion.mp3');
+    enemy_death_sound = new Audio('audio/enemy-dead.mp3');
     bossBombs = [];
     bossReached = false;
 
@@ -117,8 +121,7 @@ class World {
      */
     showGameOverScreen() {
         document.getElementById('gameOverScreen').style.display = 'flex';
-        const gameOverSound = new Audio('audio/game-over.mp3');
-        gameOverSound.play();
+        this.gameover_sound.play();
     }
 
     /**
@@ -201,11 +204,10 @@ class World {
      * and added to the game world.
      */
     checkThrowObjects() {
-        const throwSound = new Audio('audio/knife-throw.mp3');
         if (this.keyboard.RSHIFT &amp;&amp; this.canThrow &amp;&amp; this.availableKnives > 0) {
             let knife = new ThrowableObject(this.character.x + 100, this.character.y + 100);
             this.throwableObjects.push(knife);
-            throwSound.play();
+            this.throw_sound.play();
             this.canThrow = false;
             this.availableKnives--;
         }
@@ -221,12 +223,21 @@ class World {
      *  - Character vs. boss bombs (damages character if collided).
      */
     checkCollisions() {
+        this.checkEnemyHit();
+        this.checkKnifeHit();
+        this.checkBombHit();
+    }
+
+    checkEnemyHit() {
         this.level.enemies.forEach((enemy, enemyIndex) => {
             if (this.character.isColliding(enemy)) {
                 this.character.hit();
                 this.statusBar.setPercentage(this.character.energy);
             }
         });
+    }
+
+    checkKnifeHit() {
         this.throwableObjects.forEach((throwableObject, throwableIndex) => {
             for (let enemyIndex = 0; enemyIndex &lt; this.level.enemies.length; enemyIndex++) {
                 let enemy = this.level.enemies[enemyIndex];
@@ -241,13 +252,15 @@ class World {
                 }
             }
         });
+    }
+
+    checkBombHit() {
         this.bossBombs.forEach((bomb, index) => {
             if (this.character.isColliding(bomb)) {
                 this.character.hit();
                 this.bossBombs.splice(index, 1);
-                const hitSound = new Audio('audio/bomb-explosion.mp3');
-                hitSound.volume = 0.5;
-                hitSound.play();
+                this.bomb_hit_sound.volume = 0.5;
+                this.bomb_hit_sound.play();
             }
         });
     }
@@ -275,8 +288,7 @@ class World {
             return;
         }
         enemy.isDead = true;
-        const deathSound = new Audio('audio/enemy-dead.mp3');
-        deathSound.play();
+        this.enemy_death_sound.play();
         enemy.playDeathAnimation();
         setTimeout(() => {
             let index = this.level.enemies.indexOf(enemy);
@@ -292,8 +304,7 @@ class World {
      * from the level after a delay.
      */
     handleBossDeath() {
-        const deathSound = new Audio('audio/boss-dead.mp3');
-        deathSound.play();
+        this.enemy_death_sound.play();
         this.level.endboss.playDeathAnimation();
         setTimeout(() => {
             this.level.endboss = null;
@@ -355,13 +366,13 @@ class World {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bomb.html">Bomb</a></li><li><a href="BossHealthBar.html">BossHealthBar</a></li><li><a href="Character.html">Character</a></li><li><a href="Cloud.html">Cloud</a></li><li><a href="CollectableObject.html">CollectableObject</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#enterFullscreen">enterFullscreen</a></li><li><a href="global.html#exitFullscreen">exitFullscreen</a></li><li><a href="global.html#fullscreen">fullscreen</a></li><li><a href="global.html#hideLoadingScreen">hideLoadingScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#level1">level1</a></li><li><a href="global.html#loadResources">loadResources</a></li><li><a href="global.html#restartGame">restartGame</a></li><li><a href="global.html#showLoadingScreen">showLoadingScreen</a></li><li><a href="global.html#showTutorial">showTutorial</a></li><li><a href="global.html#showWinningScreen">showWinningScreen</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleMuteAllAudios">toggleMuteAllAudios</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BackgroundObject.html">BackgroundObject</a></li><li><a href="Bomb.html">Bomb</a></li><li><a href="BossHealthBar.html">BossHealthBar</a></li><li><a href="Character.html">Character</a></li><li><a href="Cloud.html">Cloud</a></li><li><a href="CollectableObject.html">CollectableObject</a></li><li><a href="DrawableObject.html">DrawableObject</a></li><li><a href="Endboss.html">Endboss</a></li><li><a href="Enemy.html">Enemy</a></li><li><a href="Keyboard.html">Keyboard</a></li><li><a href="Level.html">Level</a></li><li><a href="MovableObject.html">MovableObject</a></li><li><a href="StatusBar.html">StatusBar</a></li><li><a href="ThrowableObject.html">ThrowableObject</a></li><li><a href="World.html">World</a></li></ul><h3>Global</h3><ul><li><a href="global.html#hideLoadingScreen">hideLoadingScreen</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initLevel">initLevel</a></li><li><a href="global.html#level1">level1</a></li><li><a href="global.html#loadResources">loadResources</a></li><li><a href="global.html#restartGame">restartGame</a></li><li><a href="global.html#showLoadingScreen">showLoadingScreen</a></li><li><a href="global.html#showTutorial">showTutorial</a></li><li><a href="global.html#showWinningScreen">showWinningScreen</a></li><li><a href="global.html#startGame">startGame</a></li><li><a href="global.html#toggleMuteAllAudios">toggleMuteAllAudios</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Jan 15 2025 14:22:45 GMT+0100 (Mitteleuropäische Normalzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon Jan 27 2025 21:27:04 GMT+0100 (Mitteleuropäische Normalzeit)
 </footer>
 
 <script> prettyPrint(); </script>

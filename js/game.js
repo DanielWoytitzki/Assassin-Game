@@ -347,6 +347,11 @@ function startGame() {
     world = new World(canvas, keyboard);
     world.backgroundMusic.play().catch(error => {
     });
+    eventKeyDown();
+    eventKeyUp();
+}
+
+function eventKeyDown() {
     window.addEventListener("keydown", (event) => {
         if (event.keyCode == 39) {
             keyboard.RIGHT = true;
@@ -367,6 +372,9 @@ function startGame() {
             keyboard.RSHIFT = true;
         }
     });
+}
+
+function eventKeyUp() {
     window.addEventListener("keyup", (event) => {
         if (event.keyCode == 39) {
             keyboard.RIGHT = false;
@@ -395,6 +403,13 @@ function startGame() {
  * properties just like normal keyboard events do.
  */
 setInterval(() => {
+    eventTouchLeft();
+    eventTouchRight();
+    eventTouchJump();
+    eventTouchThrow();
+}, 50);
+
+function eventTouchLeft() {
     document.getElementById('btnLeft').addEventListener('touchstart', (event) => {
         event.preventDefault();
         keyboard.LEFT = true;
@@ -403,6 +418,9 @@ setInterval(() => {
         event.preventDefault();
         keyboard.LEFT = false;
     });
+}
+
+function eventTouchRight() {
     document.getElementById('btnRight').addEventListener('touchstart', (event) => {
         event.preventDefault();
         keyboard.RIGHT = true;
@@ -411,6 +429,9 @@ setInterval(() => {
         event.preventDefault();
         keyboard.RIGHT = false;
     });
+}
+
+function eventTouchJump() {
     document.getElementById('btnJump').addEventListener('touchstart', (event) => {
         event.preventDefault();
         keyboard.SPACE = true;
@@ -419,6 +440,9 @@ setInterval(() => {
         event.preventDefault();
         keyboard.SPACE = false;
     });
+}
+
+function eventTouchThrow() {
     document.getElementById('btnThrow').addEventListener('touchstart', (event) => {
         event.preventDefault();
         keyboard.RSHIFT = true;
@@ -427,7 +451,7 @@ setInterval(() => {
         event.preventDefault();
         keyboard.RSHIFT = false;
     });
-}, 50);
+}
 
 /**
  * Toggles the muted state of all audio elements tracked in {@link allAudios}.
@@ -438,10 +462,10 @@ function toggleMuteAllAudios() {
     allAudios.forEach(audio => audio.muted = isMuted);
 
     const img = document.getElementById('toggleMuteImage');
-  
+
     if (img.getAttribute('src') === 'img/icons/mute.png') {
-      img.setAttribute('src', 'img/icons/volume.png');
+        img.setAttribute('src', 'img/icons/volume.png');
     } else {
-      img.setAttribute('src', 'img/icons/mute.png');
+        img.setAttribute('src', 'img/icons/mute.png');
     }
 }
